@@ -1,16 +1,15 @@
 import React from 'react';
 
-import Login from '../components/login.component'
+import SignUp from '../components/signup.component'
 import logo from '../images/logo.png';
 
-const LoginPage = () =>
+const SignUpPage = () =>
 {
     return(
         <div class = "font-poppins">
-
-            <Login />
+            <SignUp />
         </div>
     );
 };
 
-export default LoginPage;
+export default SignUpPage;
