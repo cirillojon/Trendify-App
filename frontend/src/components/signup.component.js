@@ -5,8 +5,7 @@ import logo from '../images/logoWhite.png';
 export default class SignUp extends Component {
   render() {
     return (
-      <section class="bg-[#20072e] dark:bg-gray-900">
-      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div class="min-h-screen flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 bg-[#20072e] dark:bg-gray-900">
           <a href="#" class="flex items-center mb-6 pb-4">
           <img select draggable="false" class="mt-2 -mb-5" style={{ width: 250}} src={logo} alt="Trendify"></img>   
           </a>
@@ -52,7 +51,6 @@ export default class SignUp extends Component {
             </div>
           </div>
       </div>
-    </section>
     )
   }
 }
