@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
 import logo from '../images/logoWhite.png';
 
 const app_name = 'trendify-project'
@@ -89,8 +88,8 @@ function Login() {
               </div>
               <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={doLogin}>Sign in to your account</button>
               <div class="border-t-2 border-gray-600 flex items-center content-center">
-                <p class="mt-3 text-center text-sm font-normal text-white mr-1 ml-auto">Don't have account?</p>
-                <a href="/signup" class="mr-auto text-sm font-medium text-primary-600 no-underline hover:underline dark:text-primary-500">Sign up</a>
+                <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Don't have account?</p>
+                <a href="/signup" class="mr-auto text-sm font-medium text-primary-600 no-underline hover:underline">Sign up</a>
               </div>
             </form>
           </div>
