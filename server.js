@@ -61,7 +61,51 @@ app.post('/api/addcard', async (req, res, next) =>
   var ret = { error: error };
   res.status(200).json(ret);
 });
+app.post('/api/register', async (req, res, next) =>
+{
 
+
+  const {newLogin, newPwd, newName, newUserID} = req.body;
+  const newUser = {Login:newLogin, Password:newPwd, Name:newName, UserID:newUserID};
+  var ret;
+  var error = '';
+  // First step: see if there is already a user with the same login
+  try {
+    const db = client.db("LargeProjectTesting");
+    const results = await db.collection('Users').find({Login:newLogin}).toArray();
+
+    // This if statement ensures that a result was found
+    if(results.length > 0)
+    {
+      // If statement that checks if there is a duplicate login
+      if(results[0].Login.toString().toLowerCase().localeCompare(newLogin.toString().toLowerCase() == 0))
+      {
+        // If so, then output an error
+        error = "Login Name already taken";
+        ret = {error: error};
+        res.status(200).json(ret);
+        return;
+      }
+    }
+    
+  }
+  catch(e)
+  {
+    error = e.toString();
+  }
+  // Actually push the new user into the database
+  try{
+    const db = client.db("LargeProjectTesting");
+    const result = await db.collection('Users').insertOne(newUser);
+  }
+  catch(e)
+  {
+    error = e.toString();
+  }
+
+  ret = {error: error};
+  res.status(200).json(ret);
+});
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: login, password
