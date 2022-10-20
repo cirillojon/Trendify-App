@@ -36,82 +36,42 @@ client.connect();
 
 
 
-app.post('/api/addcard', async (req, res, next) =>
-{
-  // incoming: userId, color
-  // outgoing: error
-	
-  const { userId, card } = req.body;
-
-  const newCard = {Card:card,UserId:userId};
-  var error = '';
-
-  try
-  {
-    const db = client.db("COP4331Cards");
-    const result = db.collection('Cards').insertOne(newCard);
-  }
-  catch(e)
-  {
-    error = e.toString();
-  }
-
-  cardList.push( card );
-
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
 app.post('/api/register', async (req, res, next) =>
 {
-
-
-  const {newLogin, newPwd, newName, newUserID} = req.body;
-  const newUser = {Login:newLogin, Password:newPwd, Name:newName, UserID:newUserID};
+  const {login, password, name} = req.body;
+  const newUser = {Login:login, Password:password, Name:name};
   var ret;
   var error = '';
+
   // First step: see if there is already a user with the same login
-  try {
-    const db = client.db("LargeProjectTesting");
-    const results = await db.collection('Users').find({Login:newLogin}).toArray();
+  const db = client.db("LargeProjectTesting");
+  const countSimilar = await db.collection('Users').find({Login:login}).toArray();
 
-    // This if statement ensures that a result was found
-    if(results.length > 0)
+  // This if statement ensures that a result was found
+  if(countSimilar.length > 0)
+  {
+    // If statement that checks if there is a duplicate login
+    if(countSimilar[0].Login.toString().toLowerCase().localeCompare(login.toString().toLowerCase() == 0))
     {
-      // If statement that checks if there is a duplicate login
-      if(results[0].Login.toString().toLowerCase().localeCompare(newLogin.toString().toLowerCase() == 0))
-      {
-        // If so, then output an error
-        error = "Login Name already taken";
-        ret = {error: error};
-        res.status(200).json(ret);
-        return;
-      }
+      // If so, then output an error
+      error = "Login Name already taken";
+      console.log(error);
+      ret = {error: error};
+      return res.status(400).json(ret);
     }
-    
-  }
-  catch(e)
-  {
-    error = e.toString();
-  }
-  // Actually push the new user into the database
-  try{
-    const db = client.db("LargeProjectTesting");
-    const result = await db.collection('Users').insertOne(newUser);
-  }
-  catch(e)
-  {
-    error = e.toString();
   }
 
+  await db.collection('Users').insertOne(newUser);
   ret = {error: error};
+
   res.status(200).json(ret);
 });
+
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
-	
- var error = '';
+  var error = '';
 
   const { login, password } = req.body;
 
@@ -133,29 +93,6 @@ app.post('/api/login', async (req, res, next) =>
   res.status(200).json(ret);
 });
 
-app.post('/api/searchcards', async (req, res, next) => 
-{
-  // incoming: userId, search
-  // outgoing: results[], error
-
-  var error = '';
-
-  const { userId, search } = req.body;
-
-  var _search = search.trim();
-  
-  const db = client.db("COP4331Cards");
-  const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'r'}}).toArray();
-  
-  var _ret = [];
-  for( var i=0; i<results.length; i++ )
-  {
-    _ret.push( results[i].Card );
-  }
-  
-  var ret = {results:_ret, error:error};
-  res.status(200).json(ret);
-})
 
 app.use((req, res, next) => 
 {
