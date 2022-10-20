@@ -30,6 +30,12 @@ function Login() {
       let extendSearch = document.getElementById("error");
       console.log(obj)
 
+      if(password.value === "" || email.value === ""){
+        extendSearch.classList.remove('hidden'); 
+        setMessage('Please complete all the required fields');
+        return;
+      }
+
       try
       {    
           const response = await fetch(buildPath("api/login"),
