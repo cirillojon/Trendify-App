@@ -43,10 +43,15 @@ function Login() {
 
           var res = JSON.parse(await response.text());
 
-          if( res.id <= 0 )
+          if(res.error === "No account belongs to that email" || res.error === "Invalid password" )
           {
             extendSearch.classList.remove('hidden');  
             setMessage('User/Password combination incorrect');
+          }
+          else if(res.error === "Account is not verified, please check email for verification email")
+          {
+            extendSearch.classList.remove('hidden');  
+            setMessage('Account is not verified, please check email for verification email');
           }
           else
           {

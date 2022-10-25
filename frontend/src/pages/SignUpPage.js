@@ -1,7 +1,6 @@
 import React from 'react';
 
 import SignUp from '../components/signup.component'
-import logo from '../images/logo.png';
 
 const SignUpPage = () =>
 {

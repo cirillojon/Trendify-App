@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react'
 import logo from '../images/logoWhite.png';
+import * as validator from 'validator';
 
 const app_name = 'trendify-project'
+
 function buildPath(route)
 {
     if (process.env.NODE_ENV === 'production') 
@@ -14,8 +16,19 @@ function buildPath(route)
     }
 }
 
-function isValidEmail(email) {
-  return /\S+@\S+\.\S+/.test(email);
+function displayMessage(infoMessage, flag){
+  if(flag === 1){
+    infoMessage.classList.remove('bg-green-600'); 
+    infoMessage.classList.add('bg-red-600'); 
+    infoMessage.classList.remove('hidden');
+  }
+  else {
+    infoMessage.classList.remove('bg-red-600'); 
+    infoMessage.classList.add('bg-green-600'); 
+    infoMessage.classList.remove('hidden'); 
+  }
+
+  return;
 }
 
 function Signup() {
@@ -31,40 +44,42 @@ function Signup() {
   {
       event.preventDefault();
       
-      var obj = {login:email.value, password:password.value, name:name.value};
-      var js = JSON.stringify(obj);
-      let extendSearch = document.getElementById("error");
-
+      let infoMessage = document.getElementById("error");
+      
       // Initial checks when the form is submitted
       if(password.value === "" || email.value === "" || name.value === "" || confirmPassword.value === ""){
-        extendSearch.classList.remove('hidden'); 
+        displayMessage(infoMessage, 1)
         setMessage('Please complete all the required fields');
         return;
       }
 
       if(!accept.current.checked){
-        extendSearch.classList.remove('hidden'); 
+        displayMessage(infoMessage, 1)
         setMessage('Please agree to the terms and conditions');
         return;
       }
 
-      if (!isValidEmail(email.value)) {
-        extendSearch.classList.remove('hidden'); 
-        setMessage('Invalid email format');
+      if (!validator.isEmail(email.value)) {
+        displayMessage(infoMessage, 1)
+        setMessage('Invalid email');
         return;
       }
 
       if(password.value !== confirmPassword.value){
-        extendSearch.classList.remove('hidden'); 
+        displayMessage(infoMessage, 1) 
         setMessage('Passwords do not match');
         return;
       }
 
-      if(password.value.length < 7){
-        extendSearch.classList.remove('hidden');
-        setMessage('Password must be 7 characters or more');
+      if(!validator.isStrongPassword(password.value)){
+        displayMessage(infoMessage, 1)
+        setMessage('Your password is weak. Please enter a strong password.');
         return;
       }
+
+      //var hashPassword = doHash(password.value);
+      var obj = {login:email.value, password:password.value, name:name.value};
+      var js = JSON.stringify(obj);
 
       try
       {    
@@ -75,12 +90,14 @@ function Signup() {
 
           if(res.error !== "")
           {
-            extendSearch.classList.remove('hidden');  
-            setMessage('User/Password combination incorrect');
+            displayMessage(infoMessage, 1)
+            setMessage('Email address was already registered to another account.');
           }
           else
           {
-            window.location.href = '/landing';
+            displayMessage(infoMessage, 2)
+            setMessage('A verification email has been sent to your account.');
+            //window.location.href = '/landing';
           }
           
       }
