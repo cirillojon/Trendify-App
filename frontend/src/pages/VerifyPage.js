@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import LandingPage from './LandingPage'
 
+import VerifyFailedPage from '../pages/VerifyFailedPage'
+import VerifySuccessfulPage from '../pages/VerifySuccessfulPage'
 
 const app_name = 'trendify-project'
 function buildPath(route)
@@ -35,9 +36,9 @@ function apiCall(endpoint, json, method) {
   }
 
 const VerifyPage = () => {
+  const [invalidToken, setInvalidToken] = useState(false);
 
   const { userID, uniqueEmailToken } = useParams();
-
   var obj = {
     userID: userID,
     uniqueEmailToken: uniqueEmailToken
@@ -60,24 +61,24 @@ const VerifyPage = () => {
       if (res.error) {
 
         console.log("3");
+        setInvalidToken(true);
 
-        return (
-          <h1>Invalid user or email token!</h1>
-        );
-        
       } else {
         console.log("4");
+        setInvalidToken(false);
       }
-  
+      
       }).catch(function (error) {
         console.log(error);
       });
 
-  }, []);
+  }, [config, invalidToken]);
 
   return (
     <>
-      <LandingPage />
+    {
+      (invalidToken === true) ? <VerifyFailedPage /> :  <VerifySuccessfulPage />
+    }
     </>
   );
 };

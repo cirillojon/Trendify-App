@@ -19,7 +19,7 @@ function Login() {
   var email;
   var password;
 
-  const [message,setMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   const doLogin = async event => 
   {

@@ -119,7 +119,7 @@ function Signup() {
         <div class="w-full rounded-lg shadow border-2 md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 class="text-xl font-bold leading-tight tracking-regular md:text-2xl text-white">
-              Sign up with your email address
+              Sign up
             </h1>
 
             <div 
