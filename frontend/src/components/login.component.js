@@ -28,7 +28,6 @@ function Login() {
       var obj = {login:email.value,password:password.value};
       var js = JSON.stringify(obj);
       let extendSearch = document.getElementById("error");
-      console.log(obj)
 
       if(password.value === "" || email.value === ""){
         extendSearch.classList.remove('hidden'); 
@@ -51,13 +50,10 @@ function Login() {
           else if(res.error === "Account is not verified, please check email for verification email")
           {
             extendSearch.classList.remove('hidden');  
-            setMessage('Account is not verified, please check email for verification email');
+            setMessage('Account is not verified, please check your email for the verification link');
           }
           else
           {
-            var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-            localStorage.setItem('user_data', JSON.stringify(user));
-
             window.location.href = '/landing';
           }
           

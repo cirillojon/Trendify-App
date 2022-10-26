@@ -59,10 +59,10 @@ app.post('/api/register', async(req, res) => {
 
   let error = "";
 
-  const {login, password, name} = req.body;
+  const {login, password, name} = req.body; 
 
  
-  const checkUserEmail = await User.findOne({email: login});
+  const checkUserEmail = await User.findOne({Login: login});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
   const newUser = new User({

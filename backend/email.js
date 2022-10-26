@@ -1,6 +1,4 @@
-const res = require("express/lib/response");
 const nodemailer = require("nodemailer");
-const sgMail = require('@sendgrid/mail');
 const handlebars = require("handlebars")
 const fs = require("fs")
 const path = require("path")
@@ -29,13 +27,13 @@ const sendVerificationEmail = (userID, name, toEmail, uniqueEmailToken) => {
 
         const emailTransporter = nodemailer.createTransport({
             service: 'gmail',
-            host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
                user: process.env.USER,
                pass: process.env.PASS
             },
+            from: process.env.USER, 
             debug: false,
             logger: true
         });
@@ -50,7 +48,7 @@ const sendVerificationEmail = (userID, name, toEmail, uniqueEmailToken) => {
         });
     
         mailOptions = {
-            from: "Trendify Authentication",
+            from: "Trendify Authentication <Trendifyapp.auth@gmail.com",
             to: toEmail,
             subject: "Trendify: Verify your account",
             html: htmlToSend
