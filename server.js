@@ -2,9 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-var token = require('./createJWT.js');
-const crypto = require('crypto');
+
 const sendVerificationEmail = require('./backend/email.js');
 const sendPasswordResetEmail = require('./backend/passwordReset.js');
 
@@ -15,9 +13,13 @@ const User = require("./backend/schemas/userSchema");
 const emailToken = require("./backend/schemas/emailToken");
 const passwordReset = require("./backend/schemas/passwordResetToken");
 
-// Planning on getting rid of metrics such as weight, height, and gender right now. 
-//const {TESTUser, workoutMets} = require('./Mongo_Models');
-//const {User, WorkoutMets} = require('./Mongo_Models');
+// For hashing 
+const bcrypt = require('bcryptjs');
+var token = require('./createJWT.js');
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
 
 
 const path = require('path');
@@ -50,7 +52,23 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+//Encrypting text
+function encrypt(text) {
+  let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
 
+// Decrypting text
+function decrypt(text) {
+  let iv = Buffer.from(text.iv, 'hex');
+  let encryptedText = Buffer.from(text.encryptedData, 'hex');
+  let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
 
 app.post('/api/register', async(req, res) => {
 
@@ -61,13 +79,14 @@ app.post('/api/register', async(req, res) => {
 
   const {login, password, name} = req.body; 
 
- 
-  const checkUserEmail = await User.findOne({Login: login});
+  const loginHash = encrypt(login);
+
+  const checkUserEmail = await User.findOne({Login: loginHash.encryptedData});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
   const newUser = new User({
     Name: name,
-    Login: login,
+    Login: loginHash.encryptedData,
     Password: password,
     isVerified: false,
   });
@@ -90,7 +109,7 @@ app.post('/api/register', async(req, res) => {
   await emailVerificationToken.save();
 
   // Sends a verification email to verify the email
-  sendVerificationEmail(newUser._id, newUser.Name, newUser.Login, emailVerificationToken.token);
+  sendVerificationEmail(newUser._id, newUser.Name, login, emailVerificationToken.token);
   
 
   ret = {error: error};
@@ -102,18 +121,30 @@ app.post('/api/register', async(req, res) => {
 app.post("/api/emailVerification", async (req, res) => {
 
   const checkUser = await User.findOne({_id: ObjectId(req.body.userID)});
-  if(!checkUser) return res.status(400).json({error: "Error at checking userID in server.js email verification"});
+  if(!checkUser){
+    console.log("checkUser")
+    return res.status(200).json({error: "Error at checking userID in server.js email verification"});
+  } 
 
   const checkEmailToken = await emailToken.findOne({userID: req.body.userID, token: req.body.uniqueEmailToken});
-  if(!checkEmailToken) return res.status(400).json({error: "emailToken does not exist"});
+  if(!checkEmailToken){
+    console.log("checkEmailToken")
+    return res.status(200).json({error: "emailToken does not exist"});
+  } 
 
   // Changes isVerified classification for the user to true.
   checkUser.isVerified = true;
   await checkUser.save();
 
   // Deletes the email token from emailToken collection
-  emailToken.deleteOne({userID: ObjectId(req.body.userID), token: req.body.uniqueEmailToken});
-
+  emailToken.deleteOne({userID: ObjectId(req.body.userID), token: req.body.uniqueEmailToken},
+    (err) =>{
+      if(err){
+          console.log(err);
+      }
+  });
+  console.log(req.body.userID)
+  console.log(req.body.uniqueEmailToken)
   // Creates a stat history for the new user
 
   console.log(`${checkUser.Login} is now verified`);
@@ -198,8 +229,10 @@ app.post('/api/login', async (req, res, next) => {
 
   const { login, password } = req.body;
 
+  const loginHash = encrypt(login);
+
   User.findOne({
-    Login: login
+    Login: loginHash.encryptedData
   }).then((user) => {
 
     if (!user) {
