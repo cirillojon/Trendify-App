@@ -6,7 +6,7 @@ const newUser = new Schema({
     Name: {
         type: String,
         minlength: 3,
-        maxlength: 20,
+        maxlength: 50,
         required: true,
         trim: true,
     },

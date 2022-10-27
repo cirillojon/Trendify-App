@@ -60,16 +60,6 @@ function encrypt(text) {
   return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
 }
 
-// Decrypting text
-function decrypt(text) {
-  let iv = Buffer.from(text.iv, 'hex');
-  let encryptedText = Buffer.from(text.encryptedData, 'hex');
-  let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
-  let decrypted = decipher.update(encryptedText);
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-  return decrypted.toString();
-}
-
 app.post('/api/register', async(req, res) => {
 
   //Incoming: firstName, lastName, email, password, password2
@@ -79,14 +69,14 @@ app.post('/api/register', async(req, res) => {
 
   const {login, password, name} = req.body; 
 
-  const loginHash = encrypt(login);
+  //const loginHash = encrypt(login);
 
-  const checkUserEmail = await User.findOne({Login: loginHash.encryptedData});
+  const checkUserEmail = await User.findOne({Login: login});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
   const newUser = new User({
     Name: name,
-    Login: loginHash.encryptedData,
+    Login: login,
     Password: password,
     isVerified: false,
   });
@@ -161,10 +151,10 @@ app.post("/api/emailVerification", async (req, res) => {
 // Takes in:
 //      email
 app.post("/api/requestPasswordReset", async(req, res) => {
-
+    const email = req.body.email;
     // Checks if a user with the given email exists
-    const checkUser = await User.findOne({email: req.body.email});
-    if(!checkUser) return res.status(400).json({status: "Failed", in: "/api/requestPasswordReset", message: "Email does not exist"});
+    const checkUser = await User.findOne({Login: email});
+    if(!checkUser) return res.status(400).json({error: "Email does not exist"});
 
     // Creates a new password reset token
     const passwordResetToken = new passwordReset({
@@ -177,45 +167,43 @@ app.post("/api/requestPasswordReset", async(req, res) => {
 
     console.log(passwordResetToken.resetToken);
 
-    sendPasswordResetEmail(checkUser._id, checkUser.Name, checkUser.Login, passwordResetToken.resetToken);
+    sendPasswordResetEmail(checkUser._id, checkUser.Name, email, passwordResetToken.resetToken);
 
-    res.send(`If ${checkUser.email} is in our system, password reset link sent to email`);
-
+    res.status(200).json({error: ""});
 });
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Takes in:
 //      newPassword
 app.post("/api/passwordReset", async (req, res) => {
+    const {userID, passwordToken, newPassword} = req.body; 
     
+    console.log(userID, passwordToken, newPassword);
     // Checks if the user exists
-    const checkUser = await User.findOne({_id: req.params.userID});
-    if(!checkUser) return res.status(400).json({status: "Failed", in: "/passwordReset/:userID/:passwordResetToken", message: "User does not exist"});
+    const checkUser = await User.findOne({_id: userID});
+    if(!checkUser) return res.status(200).json({error: "User does not exist"});
 
-    // Checks if the password reset token exists
-    const checkPasswordResetToken = await passwordReset.findOne({userID: ObjectId(req.body.userID), resetToken: req.body.passwordResetToken});
-    if(!checkPasswordResetToken) return res.status(400).json({status: "Failed", in: "/passwordReset/:userID/:passwordResetToken", message: "Password reset token does not exist"});
+    const checkPasswordResetToken = await passwordReset.findOne({userID: userID, token: passwordToken});
+    if(!checkPasswordResetToken){
+      console.log("checkEmailToken")
+      return res.status(200).json({error: "Reset password token expired"});
+    } 
+
 
     // Hashes the new password and saves the user.
     bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(req.body.newPassword, salt, (err, hash) => {
-          if (err) throw err;
-    
-          checkUser.password = hash;
-          checkUser.save();
-        });
+      bcrypt.hash(newPassword, salt, (err, hash) => {
+        if (err) throw err;
+        checkUser.Password = hash;
+        checkUser.save();
+      });
     });
 
     // Deletes the password reset token
-    await passwordReset.deleteOne({userID: req.body.userID, resetToken: req.body.passwordResetToken});
+    await passwordReset.deleteOne({userID: ObjectId(userID), resetToken: passwordToken});
 
     console.log("Password successfully reset");
-
-    res.status(200).json({
-        status: "Successful",
-        in: "/passwordReset/:userID/:passwordResetToken",
-        message: "Password successfully reset"
-    });
+    res.status(200).json({error: ""});
 });
 
 
@@ -229,10 +217,8 @@ app.post('/api/login', async (req, res, next) => {
 
   const { login, password } = req.body;
 
-  const loginHash = encrypt(login);
-
   User.findOne({
-    Login: loginHash.encryptedData
+    Login: login
   }).then((user) => {
 
     if (!user) {
@@ -250,7 +236,6 @@ app.post('/api/login', async (req, res, next) => {
     const password = req.body.password;
 
     bcrypt.compare(password, user.Password).then(isMatch => {
-
       if (isMatch) {
 
         try

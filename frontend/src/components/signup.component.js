@@ -61,7 +61,7 @@ function Signup() {
 
       if (!validator.isEmail(email.value)) {
         displayMessage(infoMessage, 1)
-        setMessage('Invalid email');
+        setMessage('Please enter a valid email');
         return;
       }
 
@@ -118,10 +118,12 @@ function Signup() {
           alt="Trendify"></img>   
         <div class="w-full rounded-lg shadow border-2 md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-regular md:text-2xl text-white">
+            <h1 class="-mb-2 text-xl font-bold leading-tight tracking-regular md:text-2xl text-white">
               Sign up
             </h1>
-
+            <p class="mb-4 text-sm font-light leading-tight tracking-regular md:text-2xl text-white">
+                Can't find the verification link? Check your spam or junk folder.
+            </p>
             <div 
               class="hidden mb-4 flex items-center bg-red-600 text-white text-sm font-regular px-4 py-3" 
               role = "alert" 

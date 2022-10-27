@@ -6,39 +6,52 @@ const path = require("path")
 
 require('dotenv').config();
 
-const passwordReset = (userID, firstName, toEmail, passwordResetToken) => {
-    
-    var bp = require("../frontend/src/utils/Path.js");
+const app_name = 'trendify-project'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
+    {
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
+    }
+    else
+    {        
+        return 'http://localhost:3000/' + route;
+    }
+}
 
-    const templateSrc = fs.readFileSync(path.join(__dirname, "./templates/reset-password.hbs"), "utf8")
+const passwordReset = (userID, name, toEmail, passwordResetToken) => {
+    
+    const templateSrc = fs.readFileSync(path.join(__dirname, "./templates/resetPassword.hbs"), "utf8")
 
     try {
+        var actionUrl = buildPath("resetPassword")  + "/" + userID + "/" + passwordResetToken;
 
         const emailTransporter = nodemailer.createTransport({
             service: 'gmail',
-            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
                user: process.env.USER,
                pass: process.env.PASS
             },
+            from: process.env.USER, 
             debug: false,
             logger: true
         });
     
         var mailOptions;
-        var actionUrl = bp.buildPath("resetPassword") + "/" + userID + "/" + passwordResetToken;
 
         const template = handlebars.compile(templateSrc);
 
         const htmlToSend = template({
-            name: firstName,
+            name: name,
             action_url: actionUrl
         });
     
         mailOptions = {
-            from: "Shreddit Team",
+            from: "Trendify Authentication <Trendifyapp.auth@gmail.com",
             to: toEmail,
-            subject: "Shreddit: Reset your password",
+            subject: "Trendify: Reset your password",
             html: htmlToSend
         };
     
@@ -51,7 +64,7 @@ const passwordReset = (userID, firstName, toEmail, passwordResetToken) => {
 
     } catch(error) {
         console.log(error);
-    }   
+    }
 }
 
 module.exports = passwordReset;

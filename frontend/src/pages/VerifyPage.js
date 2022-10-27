@@ -1,9 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import VerifyFailedPage from '../pages/VerifyFailedPage'
-import VerifySuccessfulPage from '../pages/VerifySuccessfulPage'
 
 const app_name = 'trendify-project'
 function buildPath(route)
@@ -36,8 +34,6 @@ function apiCall(endpoint, json, method) {
   }
 
 const VerifyPage = () => {
-  const [invalidToken, setInvalidToken] = useState(false);
-
   const { userID, uniqueEmailToken } = useParams();
   var obj = {
     userID: userID,
@@ -61,26 +57,20 @@ const VerifyPage = () => {
       if (res.error) {
 
         console.log("3");
-        setInvalidToken(true);
+        window.location.href = '/verification-failed';
 
       } else {
         console.log("4");
-        setInvalidToken(false);
+        window.location.href = '/verification-successful';
       }
       
       }).catch(function (error) {
         console.log(error);
       });
 
-  }, [config, invalidToken]);
+  }, [config]);
 
-  return (
-    <>
-    {
-      (invalidToken === true) ? <VerifyFailedPage /> :  <VerifySuccessfulPage />
-    }
-    </>
-  );
+  return
 };
 
 export default VerifyPage;
