@@ -91,22 +91,24 @@ function Signup() {
 
       try
       {    
-          const response = await fetch(buildPath("api/register"),
-              {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        localStorage.setItem("user_data", JSON.stringify({login: email.value}));
 
-          var res = JSON.parse(await response.text());
+        const response = await fetch(buildPath("api/register"),
+            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
-          if(res.error !== "")
-          {
-            displayMessage(infoMessage, 1)
-            setMessage('Email address was already registered to another account.');
-          }
-          else
-          {
-            displayMessage(infoMessage, 2)
-            setMessage('A verification email has been sent to your account.');
-            //window.location.href = '/landing';
-          }
+        var res = JSON.parse(await response.text());
+
+        if(res.error !== "")
+        {
+          displayMessage(infoMessage, 1)
+          setMessage('Email address was already registered to another account.');
+        }
+        else
+        {
+          displayMessage(infoMessage, 2)
+          setMessage('A verification email has been sent to your account.');
+          //window.location.href = '/landing';
+        }
           
       }
       catch(e)

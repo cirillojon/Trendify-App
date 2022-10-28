@@ -11,19 +11,23 @@ import VerifyPage from './pages/VerifyPage'
 import PasswordResetPage2 from './pages/PasswordResetPage2'
 import VerifyFailedPage from './pages/VerifyFailedPage'
 import VerifySuccessfulPage from './pages/VerifySuccessfulPage'
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path= "/" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />}/>
-      <Route path="/landing" element={<LandingPage />}/>
       <Route path="/verification-successful" element={<VerifySuccessfulPage />}/>
       <Route path="/verification-failed" element={<VerifyFailedPage />}/>
       <Route path="/resetpage" element={<PasswordResetPage />}/>
       <Route path="/verifyAccount/:userID/:uniqueEmailToken" element={<VerifyPage />}/>
       <Route path="/resetPassword/:userID/:passwordResetToken" element={<PasswordResetPage2 />}/>
+
+      <Route element={<PrivateRoute />}>
+        <Route path="/landing" element={<LandingPage />}/>
+      </Route>
     </Routes>
   </BrowserRouter>
 );

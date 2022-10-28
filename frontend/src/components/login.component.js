@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import logo from '../images/logoWhite.png';
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
+import jwtDecode from 'jwt-decode'
+import { useLocation, useNavigate } from "react-router";
 
 const app_name = 'trendify-project'
 function buildPath(route)
@@ -28,10 +30,15 @@ function Login() {
 
   const [message, setMessage] = useState('');
 
+  // Redirect after login
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const doLogin = async event => 
   {
       event.preventDefault();
 
+      var storage = require("../tokenStorage.js");
       var obj = {login:email.value,password:password.value};
       var js = JSON.stringify(obj);
       let extendSearch = document.getElementById("error");
@@ -61,7 +68,26 @@ function Login() {
           }
           else
           {
-            window.location.href = '/landing';
+            storage.storeToken(res.ret);
+
+            var ud = jwtDecode(storage.retrieveToken(), {
+              complete: true
+            });
+  
+            var user = {
+              name: ud.Name,
+              userId: res.ret.id
+            };
+  
+            localStorage.setItem("user_data", JSON.stringify(user));
+  
+            if (location.state && location.state.from) {
+              navigate(location.state.from)
+              //console.log("LOGIN");
+            } else {
+              navigate("/landing");
+              //console.log("LANDING");
+            }
           }
           
       }
