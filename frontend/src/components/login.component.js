@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import logo from '../images/logoWhite.png';
+import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 
 const app_name = 'trendify-project'
 function buildPath(route)
@@ -15,6 +16,12 @@ function buildPath(route)
 }
 
 function Login() {
+  const [open, setOpen] = useState(false)
+
+  // handle toggle 
+  const toggle = () =>{
+      setOpen(!open)
+  }
 
   var email;
   var password;
@@ -86,9 +93,24 @@ function Login() {
               </div>
               <div>
                   <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
-                  <input type="password" name="password" id="password" placeholder="Password" class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
-                    required="" ref={(c) => password = c}></input>
+                  <div class = 'flex'>
+                    <input 
+                      type={(open === false)? 'password' :'text'}
+                      //type="password" 
+                      name="password" 
+                      id="password" 
+                      placeholder="Password" 
+                      class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
+                      required="" ref={(c) => password = c}></input>
+                      <div className='text-xl text-gray-500 flex -ml-7 mt-2.5'> {
+                        (open === false)? <AiFillEye onClick={toggle}/>:
+                        <AiFillEyeInvisible onClick={toggle}/>}
+                      </div>  
+                  </div>
+
               </div>
+
+
               <div class="flex items-center justify-between">
                   <a href="/resetpage" class="text-sm font-medium text-primary-600 no-underline hover:underline text-primary-500">Forgot password?</a>
               </div>

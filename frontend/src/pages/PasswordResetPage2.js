@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import logo from '../images/logoWhite.png';
 import * as validator from 'validator';
+import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 
 const app_name = 'trendify-project'
 function buildPath(route)
@@ -33,6 +34,13 @@ function displayMessage(infoMessage, flag){
 
 const PasswordResetPage2 = () =>
 {
+    const [open, setOpen] = useState(false)
+
+    // handle toggle 
+    const toggle = () =>{
+        setOpen(!open)
+    }
+
     const {userID, passwordResetToken} = useParams();
 
     const [message,setMessage] = useState('');
@@ -121,16 +129,42 @@ const PasswordResetPage2 = () =>
             </div>
 
             <form>
-                <div>
-                    <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Enter a new password" class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
-                        required="" ref={(c) => password = c}></input>
-                </div>
-                <div>
-                    <label for="password" class="block mb-2 text-sm font-medium text-white mt-4">Confirm Password</label>
-                    <input type="password" name="password" id="confirmPassword" placeholder="Confirm your password" class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
-                        required="" ref={(c) => confirmPassword = c}></input>
-                </div>
+            <div>
+                  <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
+                  <div class = 'flex mb-4'>
+                    <input 
+                      type={(open === false)? 'password' :'text'}
+                      //type="password" 
+                      name="password" 
+                      id="password" 
+                      placeholder="Password" 
+                      class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
+                      required="" ref={(c) => password = c}></input>
+                      <div className='text-xl text-gray-500 flex -ml-7 mt-2.5'> {
+                        (open === false)? <AiFillEye onClick={toggle}/>:
+                        <AiFillEyeInvisible onClick={toggle}/>}
+                      </div>  
+                  </div>
+              </div>
+              <div>
+                  <label 
+                    for="password" 
+                    class="block mb-2 text-sm font-medium text-white">Confirm Password</label>
+                  <div class = 'flex'>
+                    <input 
+                      type={(open === false)? 'password' :'text'}
+                      name="confirmPassword" 
+                      id="confirmPassword" 
+                      placeholder="Enter your password again" 
+                      class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
+                      required="" 
+                      ref={(c) => confirmPassword = c}></input>
+                      <div className='text-xl text-gray-500 flex -ml-7 mt-2.5'> {
+                        (open === false)? <AiFillEye onClick={toggle}/>:
+                        <AiFillEyeInvisible onClick={toggle}/>}
+                      </div>  
+                  </div>
+              </div>
                 <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 mt-4" onClick={attemptResetPassword}>Reset your password</button>
             </form>
                 <div class="border-t-2 border-gray-600 flex items-center content-center">
