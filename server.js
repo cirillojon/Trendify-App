@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 const sendVerificationEmail = require('./backend/email.js');
 const sendPasswordResetEmail = require('./backend/passwordReset.js');
@@ -70,7 +71,7 @@ app.post('/api/register', async(req, res) => {
   const {login, password, name} = req.body; 
 
   //const loginHash = encrypt(login);
-
+  
   const checkUserEmail = await User.findOne({Login: login});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
@@ -101,7 +102,7 @@ app.post('/api/register', async(req, res) => {
   // Sends a verification email to verify the email
   sendVerificationEmail(newUser._id, newUser.Name, login, emailVerificationToken.token);
   
-
+  
   ret = {error: error};
   res.status(200).json(ret);
 });
@@ -260,6 +261,24 @@ app.post('/api/login', async (req, res, next) => {
   });
 });
 
+
+app.post("/api/verify-human", async (req, res, next) => {
+  //Destructuring response token from request body
+  const {token} = req.body;
+  
+  //sends secret key and response token to google
+  await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.REACT_APP_SECRET_KEY}&response=${token}`
+  );
+  
+  //check response status and send back to the client-side
+    if (res.status(200)) {
+      res.status(200).json({user: "human"});
+    }else{
+      res.status(200).json({user: "robot"});
+    }
+})
+
 app.use((req, res, next) => {
 
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -280,3 +299,4 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log('Server listening on port ' + PORT);
 });
+

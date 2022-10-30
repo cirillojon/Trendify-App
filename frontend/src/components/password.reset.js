@@ -109,7 +109,7 @@ function ResetPassword() {
             
                 <div class="border-t-2 border-gray-600 flex items-center content-center">
                     <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Ready to sign in?</p>
-                    <a href="/" class="mr-auto text-sm font-medium text-primary-600 no-underline hover:underline">Click here.</a>
+                    <a href="/" class="mr-auto text-sm font-medium text-sky-300 hover:text-sky-500 no-underline hover:underline">Click here.</a>
               </div>
 
             </form>

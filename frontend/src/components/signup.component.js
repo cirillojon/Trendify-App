@@ -2,8 +2,22 @@ import React, { useState, useRef } from 'react'
 import logo from '../images/logoWhite.png';
 import * as validator from 'validator';
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const app_name = 'trendify-project'
+
+function apiCall(endpoint, json, method) {
+  var call = {
+    method: method ? method : "POST",
+    url: buildPath(endpoint),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: json
+  }
+  return call;
+}
 
 function buildPath(route)
 {
@@ -32,6 +46,40 @@ function displayMessage(infoMessage, flag){
   return;
 }
 
+function performChecks(infoMessage, password, email, name, confirmPassword, accept, setMessage){
+  // Initial checks when the form is submitted
+  if(password.value === "" || email.value === "" || name.value === "" || confirmPassword.value === ""){
+    displayMessage(infoMessage, 1)
+    setMessage('Please complete all the required fields');
+    return false;
+  }
+
+  if(!accept.current.checked){
+    displayMessage(infoMessage, 1)
+    setMessage('Please agree to the terms and conditions');
+    return false;
+  }
+
+  if (!validator.isEmail(email.value)) {
+    displayMessage(infoMessage, 1)
+    setMessage('Please enter a valid email');
+    return false;
+  }
+
+  if(password.value !== confirmPassword.value){
+    displayMessage(infoMessage, 1) 
+    setMessage('Passwords do not match');
+    return false;
+  }
+
+  if(!validator.isStrongPassword(password.value)){
+    displayMessage(infoMessage, 1)
+    setMessage('Your password is weak. Please enter a strong password.');
+    return false;
+  }
+  return true;
+}
+
 function Signup() {
   const [open, setOpen] = useState(false)
 
@@ -40,6 +88,7 @@ function Signup() {
       setOpen(!open)
   }
 
+  // Inputs
   var email;
   var password;
   var confirmPassword;
@@ -48,44 +97,35 @@ function Signup() {
   const accept = useRef(null);
   const [message,setMessage] = useState('');
 
+  // For the captcha
+  const captchaRef = useRef(null);
+
   const doSignup = async event => 
   {
       event.preventDefault();
-      
       let infoMessage = document.getElementById("error");
       
-      // Initial checks when the form is submitted
-      if(password.value === "" || email.value === "" || name.value === "" || confirmPassword.value === ""){
-        displayMessage(infoMessage, 1)
-        setMessage('Please complete all the required fields');
-        return;
-      }
+      const token = await captchaRef.current.executeAsync();
+      captchaRef.current.reset();
+      console.log("token: " + token)
 
-      if(!accept.current.checked){
-        displayMessage(infoMessage, 1)
-        setMessage('Please agree to the terms and conditions');
-        return;
-      }
+      var config = apiCall("api/verify-human", {token});
 
-      if (!validator.isEmail(email.value)) {
-        displayMessage(infoMessage, 1)
-        setMessage('Please enter a valid email');
-        return;
-      }
+      // Check first if the user is human using reCaptcha
+      axios(config).then(function (response) {
+        var res = response.data;
+        if (res.user === "robot") {
+          displayMessage(infoMessage, 1)
+          setMessage('You are not human, robots are not allowed here. Get lost!');
+        } 
+        }).catch(function (error) {
+          console.log(error);
+      });
 
-      if(password.value !== confirmPassword.value){
-        displayMessage(infoMessage, 1) 
-        setMessage('Passwords do not match');
-        return;
-      }
+      // Check the input fields
+      if(!performChecks(infoMessage, password, email, name, confirmPassword, accept, setMessage)) return;
 
-      if(!validator.isStrongPassword(password.value)){
-        displayMessage(infoMessage, 1)
-        setMessage('Your password is weak. Please enter a strong password.');
-        return;
-      }
-
-      //var hashPassword = doHash(password.value);
+      // if all prior checks have passed, perform the api call
       var obj = {login:email.value, password:password.value, name:name.value};
       var js = JSON.stringify(obj);
 
@@ -108,6 +148,12 @@ function Signup() {
           displayMessage(infoMessage, 2)
           setMessage('A verification email has been sent to your account.');
           //window.location.href = '/landing';
+          
+          // Clear the fields
+          email.value = '';
+          password.value = '';
+          confirmPassword.value = '';
+          name.value = '';
         }
           
       }
@@ -115,7 +161,7 @@ function Signup() {
       {
           alert(e.toString());
           return;
-      }    
+      } 
   };
 
   return (
@@ -150,7 +196,7 @@ function Signup() {
               <div>
                   <label 
                     for="name" 
-                    class="block mb-2 text-sm font-medium text-white">What should we call you?</label>
+                    class="block mb-2 text-sm font-medium text-white">What should we call you?<span class="text-red-500 select-none">&nbsp;*</span></label>
                   <input 
                     type="" 
                     name="name" 
@@ -163,7 +209,8 @@ function Signup() {
               <div>
                   <label 
                     for="email" 
-                    class="block mb-2 text-sm font-medium text-white">What's your email?</label>
+                    class="block mb-2 text-sm font-medium text-white">What's your email?<span class="text-red-500 select-none">&nbsp;*</span></label>
+                  
                   <input 
                     type="" 
                     name="email" 
@@ -176,7 +223,7 @@ function Signup() {
               <div>
                   <label 
                     for="password" 
-                    class="block mb-2 text-sm font-medium text-white">Password</label>
+                    class="block mb-2 text-sm font-medium text-white">Password<span class="text-red-500 select-none">&nbsp;*</span></label>
                   <div class = 'flex'>
                     <input 
                       type={(open === false)? 'password' :'text'}
@@ -195,7 +242,7 @@ function Signup() {
               <div>
                   <label 
                     for="password" 
-                    class="block mb-2 text-sm font-medium text-white">Confirm Password</label>
+                    class="block mb-2 text-sm font-medium text-white">Confirm Password<span class="text-red-500 select-none">&nbsp;*</span></label>
                   <div class = 'flex'>
                     <input 
                       type={(open === false)? 'password' :'text'}
@@ -225,9 +272,10 @@ function Signup() {
                 <div class="ml-3 text-sm">
                   <label 
                     for="terms" 
-                    class="font-light text-gray-500 text-gray-300">I accept the <a class="no-underline font-medium text-primary-600 hover:underline text-primary-500" href="https://www.termsandconditionsgenerator.com/live.php?token=etWJMR2qa5qehEcvVYyak0qiAVxQxH0D">Terms and Conditions</a></label>
+                    class="font-light text-gray-500 text-gray-300">I accept the <a class="no-underline font-medium text-sky-300 hover:text-sky-500 hover:underline text-primary-500" href="https://www.termsandconditionsgenerator.com/live.php?token=etWJMR2qa5qehEcvVYyak0qiAVxQxH0D">Terms and Conditions</a></label>
                 </div>
               </div>
+
 
               <button 
                 onClick={doSignup} 
@@ -235,12 +283,20 @@ function Signup() {
                 class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center focus:ring-primary-800">Submit the form</button>
               <div class="border-t-2 border-gray-600 flex items-center content-center">
                 <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Already have an account?</p>
-                <a href="/" class="mr-auto text-sm font-medium text-primary-600 no-underline hover:underline">Login here</a>
+                <a href="/" class="mr-auto text-sm font-medium no-underline hover:underline text-sky-300 hover:text-sky-500">Login here</a>
               </div>
+              <p class="text-xs text-gray-400">This site is protected by reCAPTCHA and the <a href="https://policies.google.com/privacy?hl=en-US" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Google Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Terms of Service</a> apply.</p>
+                        
             </form>
           </div>
         </div>
+        <ReCAPTCHA
+          sitekey= "6LeUVcUiAAAAACHBI-FVwAqopfU09sH73VTeB34G"
+          size = "invisible"
+          ref={captchaRef}
+        />,
     </div>
+    
     );
   };
     
