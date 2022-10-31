@@ -61,17 +61,21 @@ function encrypt(text) {
   return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
 }
 
+// Spotify
+const SpotifyWebApi = require("spotify-web-api-node")
+const lyricsFinder = require("lyrics-finder")
+let client_id = process.env.CLIENT_ID;
+let client_secret =  process.env.CLIENT_SECRET;
+let redirect_uri = "";
+
+if (process.env.NODE_ENV === 'production') redirect_uri =  process.env.REDIRECT_URI;
+else redirect_uri =  process.env.FRONTEND_URI;
+
+
 app.post('/api/register', async(req, res) => {
-
-  //Incoming: firstName, lastName, email, password, password2
-  //Outgoing: errors
-
   let error = "";
-
   const {login, password, name} = req.body; 
 
-  //const loginHash = encrypt(login);
-  
   const checkUserEmail = await User.findOne({Login: login});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
@@ -174,8 +178,6 @@ app.post("/api/requestPasswordReset", async(req, res) => {
 });
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Takes in:
-//      newPassword
 app.post("/api/passwordReset", async (req, res) => {
     const {userID, passwordToken, newPassword} = req.body; 
     
@@ -207,61 +209,38 @@ app.post("/api/passwordReset", async (req, res) => {
     res.status(200).json({error: ""});
 });
 
-
-//login API
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
 app.post('/api/login', async (req, res, next) => {
-
-  //Incoming: email, password
-  //Outgoing: acessToken, fn, ln, id, error
-
-  let errors = {}
-
   const { login, password } = req.body;
 
-  User.findOne({
-    Login: login
-  }).then((user) => {
-
+  User.findOne({Login: login }).then((user) => {
     if (!user) {
-      return res.status(400).json({
-        error: "No account belongs to that email"
-      });
+      return res.status(400).json({error: "No account belongs to that email"});
     }
-
     if(user.isVerified == false) {
-      return res.status(400).json({
-        error: "Account is not verified, please check email for verification email"
-      });
+      return res.status(400).json({error: "Account is not verified, please check email for verification email" });
     }
 
     const password = req.body.password;
-
     bcrypt.compare(password, user.Password).then(isMatch => {
       if (isMatch) {
-
-        try
-        {
+        try{
           const token = require("./createJWT.js");
           ret = token.createToken( user.Name, user._id );
         }
-        catch(e)
-        {
+        catch(e){
           ret = {error:e.message};
         }
-
         return res.status(200).json({ret});
-
-      } else {
-
-        return res.status(400).json({
-          error: "Invalid password"
-        });
+      } 
+      else{
+        return res.status(400).json({error: "Invalid password"});
       }
     });
   });
 });
 
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
 app.post("/api/verify-human", async (req, res, next) => {
   //Destructuring response token from request body
   const {token} = req.body;
@@ -279,8 +258,62 @@ app.post("/api/verify-human", async (req, res, next) => {
     }
 })
 
-app.use((req, res, next) => {
 
+//!! ALWAYS DISABLE STRICT MODE
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+app.post("/refresh", (req, res) => {
+  const refreshToken = req.body.refreshToken
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: redirect_uri,
+    clientId: client_id,
+    clientSecret: client_secret,
+    refreshToken,
+  })
+    
+  spotifyApi
+    .refreshAccessToken()
+    .then(data => {
+      res.json({
+        accessToken: data.body.accessToken,
+        expiresIn: data.body.expiresIn,
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.sendStatus(400)
+    })
+})
+  
+app.post("/spotifylogin", (req, res) => {
+  const code = req.body.code
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: redirect_uri,
+    clientId: client_id,
+    clientSecret: client_secret,
+  })
+  console.log(spotifyApi)
+  spotifyApi
+    .authorizationCodeGrant(code)
+    .then(data => {
+      res.json({
+        accessToken: data.body.access_token,
+        refreshToken: data.body.refresh_token,
+        expiresIn: data.body.expires_in,
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.sendStatus(400)
+    })
+})
+
+app.get("/lyrics", async (req, res) => {
+  const lyrics =
+    (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
+  res.json({ lyrics })
+})
+
+app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   res.setHeader(

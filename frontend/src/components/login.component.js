@@ -1,26 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import logo from '../images/logoWhite.png';
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import jwtDecode from 'jwt-decode'
 import { useLocation, useNavigate } from "react-router";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const app_name = 'trendify-project'
 function buildPath(route)
 {
-    if (process.env.NODE_ENV === 'production') 
-    {
-        return 'https://' + app_name +  '.herokuapp.com/' + route;
-    }
-    else
-    {        
-        return 'http://localhost:5000/' + route;
-    }
+  if (process.env.NODE_ENV === 'production') 
+  {
+      return 'https://' + app_name +  '.herokuapp.com/' + route;
+  }
+  else
+  {        
+      return 'http://localhost:5000/' + route;
+  }
+}
+
+function apiCall(endpoint, json, method) {
+  var call = {
+    method: method ? method : "POST",
+    url: buildPath(endpoint),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: json
+  }
+  return call;
 }
 
 function Login() {
   const [open, setOpen] = useState(false)
 
-  // handle toggle 
+  // handle toggle a
   const toggle = () =>{
       setOpen(!open)
   }
@@ -34,6 +48,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   
+  const captchaRef = useRef(null);
   const doLogin = async event => 
   {
       event.preventDefault();
@@ -49,6 +64,23 @@ function Login() {
         return;
       }
 
+      const token = await captchaRef.current.executeAsync();
+      captchaRef.current.reset();
+      console.log("token: " + token)
+
+      var config = apiCall("api/verify-human", {token});
+
+      // Check first if the user is human using reCaptcha
+      axios(config).then(function (response) {
+        var res = response.data;
+        if (res.user === "robot") {
+          extendSearch.classList.remove('hidden'); 
+          setMessage('You are not human, robots are not allowed here. Get lost!');
+        } 
+        }).catch(function (error) {
+          console.log(error);
+      });
+
       try
       {    
           const response = await fetch(buildPath("api/login"),
@@ -59,7 +91,7 @@ function Login() {
           if(res.error === "No account belongs to that email" || res.error === "Invalid password" )
           {
             extendSearch.classList.remove('hidden');  
-            setMessage('User/Password combination incorrect');
+            setMessage('User/Password combination incorrect.');
           }
           else if(res.error === "Account is not verified, please check email for verification email")
           {
@@ -145,9 +177,15 @@ function Login() {
                 <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Don't have account?</p>
                 <a href="/signup" class="mr-auto text-sm font-medium text-sky-300 hover:text-sky-500 no-underline hover:underline">Sign up</a>
               </div>
+              <p class="mt-2 -mb-1 text-xs text-gray-400">This site is protected by reCAPTCHA and the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Google Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Terms of Service</a> apply.</p>          
             </form>
           </div>
         </div>
+        <ReCAPTCHA
+          sitekey= "6LeUVcUiAAAAACHBI-FVwAqopfU09sH73VTeB34G"
+          size = "invisible"
+          ref={captchaRef}
+        />,
     </div>
   );
 };

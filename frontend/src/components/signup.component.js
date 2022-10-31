@@ -272,7 +272,7 @@ function Signup() {
                 <div class="ml-3 text-sm">
                   <label 
                     for="terms" 
-                    class="font-light text-gray-500 text-gray-300">I accept the <a class="no-underline font-medium text-sky-300 hover:text-sky-500 hover:underline text-primary-500" href="https://www.termsandconditionsgenerator.com/live.php?token=etWJMR2qa5qehEcvVYyak0qiAVxQxH0D">Terms and Conditions</a></label>
+                    class="font-light text-gray-500 text-gray-300">I accept the <a class="no-underline font-medium text-sky-300 hover:text-sky-500 hover:underline text-primary-500" target="_blank" rel="noopener noreferrer" href="https://www.termsandconditionsgenerator.com/live.php?token=etWJMR2qa5qehEcvVYyak0qiAVxQxH0D">Terms and Conditions</a></label>
                 </div>
               </div>
 
@@ -285,8 +285,7 @@ function Signup() {
                 <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Already have an account?</p>
                 <a href="/" class="mr-auto text-sm font-medium no-underline hover:underline text-sky-300 hover:text-sky-500">Login here</a>
               </div>
-              <p class="text-xs text-gray-400">This site is protected by reCAPTCHA and the <a href="https://policies.google.com/privacy?hl=en-US" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Google Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Terms of Service</a> apply.</p>
-                        
+              <p class="mt-2 -mb-1 text-xs text-gray-400">This site is protected by reCAPTCHA and the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Google Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Terms of Service</a> apply.</p>          
             </form>
           </div>
         </div>

@@ -11,7 +11,12 @@ import VerifyPage from './pages/VerifyPage'
 import PasswordResetPage2 from './pages/PasswordResetPage2'
 import VerifyFailedPage from './pages/VerifyFailedPage'
 import VerifySuccessfulPage from './pages/VerifySuccessfulPage'
+import DashboardPage from './pages/DashboardPage';
+
 import PrivateRoute from "./routes/PrivateRoute";
+
+
+const code = new URLSearchParams(window.location.search).get("code")
 
 function App() {
   return (
@@ -26,7 +31,7 @@ function App() {
       <Route path="/resetPassword/:userID/:passwordResetToken" element={<PasswordResetPage2 />}/>
 
       <Route element={<PrivateRoute />}>
-        <Route path="/landing" element={<LandingPage />}/>
+        <Route path="/landing/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
       </Route>
     </Routes>
   </BrowserRouter>
