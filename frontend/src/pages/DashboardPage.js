@@ -6,6 +6,10 @@ import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
 import { Container, Form } from "react-bootstrap"
 
+
+import Profile from "../components/spotify.profile"
+import Nav from "../components/spotify.nav"
+
 const app_name = 'trendify-project'
 function buildPath(route)
 {
@@ -23,35 +27,25 @@ const spotifyApi = new SpotifyWebApi({
     clientId: "abb24fee7b8443d3bab993fe8504fbab",
   })
   
-export default function Dashboard({ code }) {
-    console.log(code)
-const accessToken = useAuth(code)
-const [search, setSearch] = useState("")
-const [searchResults, setSearchResults] = useState([])
-const [playingTrack, setPlayingTrack] = useState()
-const [lyrics, setLyrics] = useState("")
+export default function Dashboard({ code }) {  
+    console.log(code)  
+    const accessToken = useAuth(code)
+    const [search, setSearch] = useState("")
+    const [searchResults, setSearchResults] = useState([])
+    const [playingTrack, setPlayingTrack] = useState()
+
+    const [user, setUser] = useState();
+    const [numFollowing, setNumFollowing] = useState();
+    const [playlist, setPlaylist] = useState();
+    const [topArtists, setTopArtists] = useState();
+    const [topTracks, setTopTracks] = useState();
 
 function chooseTrack(track) {
     setPlayingTrack(track)
     setSearch("")
-    setLyrics("")
 }
 
-useEffect(() => {
-    if (!playingTrack) return
-
-    axios
-    .get(buildPath("lyrics"), {
-        params: {
-        track: playingTrack.title,
-        artist: playingTrack.artist,
-        },
-    })
-    .then(res => {
-        setLyrics(res.data.lyrics)
-    })
-}, [playingTrack])
-
+// ACCESS TOKEN
 useEffect(() => {
     if (!accessToken) return
     spotifyApi.setAccessToken(accessToken)
@@ -63,56 +57,108 @@ useEffect(() => {
 
     let cancel = false
     spotifyApi.searchTracks(search).then(res => {
-    if (cancel) return
-    setSearchResults(
-        res.body.tracks.items.map(track => {
-        const smallestAlbumImage = track.album.images.reduce(
-            (smallest, image) => {
-            if (image.height < smallest.height) return image
-            return smallest
-            },
-            track.album.images[0]
-        )
+        if (cancel) return
+        setSearchResults(
+            res.body.tracks.items.map(track => {
+            const smallestAlbumImage = track.album.images.reduce(
+                (smallest, image) => {
+                if (image.height < smallest.height) return image
+                return smallest
+                },
+                track.album.images[0]
+            )
 
-        return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: smallestAlbumImage.url,
-        }
-        })
-    )
+            return {
+                artist: track.artists[0].name,
+                title: track.name,
+                uri: track.uri,
+                albumUrl: smallestAlbumImage.url,
+            }
+            })
+        )
     })
 
     return () => (cancel = true)
 }, [search, accessToken])
 
+// USER PROFILE
+useEffect(() => {
+    if(!accessToken) return
+    spotifyApi.getMe().then(res => {
+        console.log(res.body)
+        setUser(
+            res.body
+        )
+        
+    });
+}, [accessToken])
+
+// FOLLOWING 
+useEffect(() => {
+    if(!accessToken) return
+    spotifyApi.getFollowedArtists().then(
+        function(data) {
+          console.log("FOLLOWED ARTISTS " + data.body.artists.total);
+          setNumFollowing(data.body.artists.total);
+        },
+        function(err) {
+          console.log('Something went wrong..', err.message);
+        }
+);}, [accessToken])
+
+// PLAYLIST 
+useEffect(() => {
+    if(!accessToken) return
+    if(!user) return
+    spotifyApi.getUserPlaylists(user.id).then(
+        function(data) {
+            console.log('Retrieved playlists', data.body);
+            setPlaylist(data.body);
+        },
+        function(err) {
+          console.log('Something went wrong..', err.message);
+        }
+);}, [accessToken, user])
+
+// TOP ARTISTS
+useEffect(() => {
+    if(!accessToken) return
+    spotifyApi.getMyTopArtists()
+    .then(function(data) {
+      let topArtists = data.body.items;
+      console.log(topArtists);
+      setTopArtists(topArtists);
+    }, function(err) {
+      console.log('Something went wrong!', err);
+    }
+);}, [accessToken])
+
+// TOP TRACKS
+useEffect(() => {
+    if(!accessToken) return
+    spotifyApi.getMyTopTracks({time_range: "long_term"})
+    .then(function(data) {
+        let topTracks = data.body.items;
+        console.log("your top tracks", topTracks);
+        setTopTracks(topTracks)
+    }, function(err) {
+        console.log('Something went wrong!', err);
+    }
+);}, [accessToken])
+
+
+
 return (
-    <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
-    <Form.Control
-        type="search"
-        placeholder="Search Songs/Artists"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-    />
-    <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-        {searchResults.map(track => (
-        <TrackSearchResult
-            track={track}
-            key={track.uri}
-            chooseTrack={chooseTrack}
+    <div class = "bg-[#111827] min-h-screen font-poppins">
+        <Nav/>
+        <Profile 
+            profile = {user}
+            numFollowing = {numFollowing}
+            playlist = {playlist}
+            topTracks = {topTracks}
+            topArtists = {topArtists}
         />
-        ))}
-        {searchResults.length === 0 && (
-        <div className="text-center" style={{ whiteSpace: "pre" }}>
-            {lyrics}
-        </div>
-        )}
     </div>
-    <div>
-        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
-    </div>
-    </Container>
 )
 }
   

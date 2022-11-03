@@ -1,13 +1,35 @@
+const SPACE_DELIMITER = "%20";
+const SCOPES = [
+  "user-read-private",
+  "user-read-email",
+  "user-read-recently-played",
+  "user-top-read",
+  "user-follow-read",
+  "user-follow-modify",
+  "playlist-read-private",
+  "playlist-read-collaborative",
+  "playlist-modify-public",
+  "streaming",
+  "user-library-read",
+  "user-library-modify",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+];
+const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
+//test
 function connectSpotify() {
   if (process.env.NODE_ENV === 'production') 
-    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=https://trendify-project.herokuapp.com/landing/&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";  
+    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=https://trendify-project.herokuapp.com/landing/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";  
   
-  else 
-    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=http://localhost:3000/landing/&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";    
+  else {
+    console.log(SCOPES_URL_PARAM);
+    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=http://localhost:3000/landing/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";    
+  }
+    
 }
 
 function Body() {
-
+  
   return (
     <section class="text-gray-700 body-font bg-[#20072e] py-20">
         <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">

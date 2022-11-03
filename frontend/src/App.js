@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from "react"
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -16,9 +16,20 @@ import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from "./routes/PrivateRoute";
 
 
-const code = new URLSearchParams(window.location.search).get("code")
+
 
 function App() {
+  const code = new URLSearchParams(window.location.search).get("code")
+  const [token, setToken] = useState("")
+
+  useEffect(() => {
+    if(!token === "") return
+    if(!code === "") return
+
+    console.log(code);
+    setToken(code);
+}, [code, token])
+  
   return (
   <BrowserRouter>
     <Routes>
@@ -30,8 +41,10 @@ function App() {
       <Route path="/verifyAccount/:userID/:uniqueEmailToken" element={<VerifyPage />}/>
       <Route path="/resetPassword/:userID/:passwordResetToken" element={<PasswordResetPage2 />}/>
 
+
+      
       <Route element={<PrivateRoute />}>
-        <Route path="/landing/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/landing/" element={token ? <DashboardPage code={token} /> : <LandingPage/>} />
       </Route>
     </Routes>
   </BrowserRouter>

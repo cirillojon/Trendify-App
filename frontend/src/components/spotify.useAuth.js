@@ -21,8 +21,7 @@ export default function UseAuth(code) {
   const [expiresIn, setExpiresIn] = useState()
   
   console.log(refreshToken)
-  useEffect(() => {
-    axios
+  useEffect(() => {axios
       .post(buildPath('spotifylogin'), {
         code,
       })
@@ -30,7 +29,8 @@ export default function UseAuth(code) {
         setAccessToken(res.data.accessToken)
         setRefreshToken(res.data.refreshToken)
         setExpiresIn(res.data.expiresIn)
-        window.history.pushState({}, null, "/")
+
+        window.history.pushState({}, null, "/landing")
       })
       .catch(() => {
         window.location = "/landing"
