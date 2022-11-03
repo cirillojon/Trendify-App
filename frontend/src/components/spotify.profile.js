@@ -61,39 +61,39 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     class="w-32 h-32 object-cover rounded-full border-8 border-[#111827] shadow absolute -top-16" alt=""/>
                 </div>
                 <h1 class="text-slate-50 text-5xl mt-20 text-center font-bold mb-1 flex justify-center items-center space-x-2">
-                    <a target="_blank" rel="noopener noreferrer" class="lg:text-5xl text-xl font-bold no-underline hover:underline text-sky-50 hover:text-sky-300" href = {profile.external_urls.spotify} >{profile.display_name}</a>
+                    <a target="_blank" rel="noopener noreferrer" class="lg:text-5xl text-3xl font-bold no-underline hover:underline text-sky-50 hover:text-sky-300" href = {profile.external_urls.spotify} >{profile.display_name}</a>
                 </h1>
                 <div class="flex justify-center space-x-10 lg:space-x-32 md:space-x-20 xl:space-x-32 mb-10 mt-4">
                 <div class="text-center">
-                    <div class="text-4xl text-green-500 font-bold">
+                    <div class="lg:text-4xl text-2xl text-green-500 font-bold">
                     {numFollowing}
                     </div>
-                    <div class="text-sm text-white">
+                    <div class="lg:text-sm text-xs text-white">
                     Following
                     </div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl text-green-500 font-bold">
+                    <div class="lg:text-4xl text-2xl text-green-500 font-bold">
                     {profile.followers.total}
                     </div>
-                    <div class="text-sm text-white">
+                    <div class="lg:text-sm text-xs text-white">
                     Followers
                     </div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl text-green-500 font-bold">
+                    <div class="lg:text-4xl text-2xl text-green-500 font-bold">
                     {playlist.total}
                     </div>
-                    <div class="text-sm text-white">
+                    <div class="lg:text-sm text-xs text-white">
                     Playlist
                     </div>
                 </div>
                 </div>
                 <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 
                     border-4 border-slate-400 rounded-full shadow
-                    font-bold py-3 px-5
+                    font-bold lg:py-3 lg:px-5 px-3 py-1
                     relative mb-2 block transition-all 
-                    duration-300 ml-auto mr-auto text-xl font-bold tracking-wider">
+                    duration-300 ml-auto mr-auto lg:text-xl text-sm font-bold tracking-wider">
                 LOGOUT
                 </button>
             </div>
@@ -105,8 +105,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                 <div class = "flex -mb-4">
                     <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top Artists</strong>
                     <div class = "p-3 ml-auto">
-                        <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold py-2 px-3 border-2 
-                            border-slate-400 rounded-full shadow tracking-wide text-sm">SEE MORE</button>
+                        <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold lg:py-2 lg:px-3 py-1 px-2 border-2 
+                            border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs">SEE MORE</button>
                     </div>
                 </div>
 
@@ -119,8 +119,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                 <div class = "flex -mb-4">
                     <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top Tracks</strong>
                     <div class = "p-3 ml-auto">
-                        <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold py-2 px-3 border-2 
-                            border-slate-400 rounded-full shadow tracking-wide text-sm">SEE MORE</button>
+                    <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold lg:py-2 lg:px-3 py-1 px-2 border-2 
+                            border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs">SEE MORE</button>
                     </div>
                 </div>
 
