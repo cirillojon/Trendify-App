@@ -10,7 +10,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {artist.external_urls.spotify} 
                             target="_blank" rel="noopener noreferrer"
                             class="filter hover:grayscale hover:contrast-100">
-                        <img alt = "profile-profile" src={artist.images[2].url} 
+                        <img alt = "profile-profile" draggable="false" src={artist.images[2].url} 
                         class="object-content pr-auto lg:w-14 lg:h-14 w-12 h-12 rounded-full aspect-square "/>
                     </a>
                 </span>
@@ -32,7 +32,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
                         class="filter hover:grayscale hover:contrast-100">
-                    <img alt = "profile-profile" src={track.album.images[0].url} 
+                    <img alt = "profile-profile" draggable="false" src={track.album.images[0].url} 
                         class="object-content lg:w-14 lg:h-14 w-12 h-12 rounded-full "/>
                     </a>
                 </span>
@@ -54,14 +54,14 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     <div class = "ml-auto mr-auto lg:px-10 px-2">
         <div class="ml-auto mr-auto min-h-fit lg:w-3/6 flex items-center justify-center">
             <div class="p-6 rounded-xl w-full">
-                <img src={topTracks[0].album.images[0].url}
+                <img draggable="false" src={topTracks[0].album.images[0].url}
                     class="rounded-xl h-60 w-full object-cover shadow" alt=""/>
                 <div class="flex justify-center relative">
-                <img src={profile.images[0].url} 
+                <img draggable="false" src={profile.images[0].url} 
                     class="w-32 h-32 object-cover rounded-full border-8 border-[#111827] shadow absolute -top-16" alt=""/>
                 </div>
                 <h1 class="text-slate-50 text-5xl mt-20 text-center font-bold mb-1 flex justify-center items-center space-x-2">
-                    <a target="_blank" rel="noopener noreferrer" class="text-5xl font-bold no-underline hover:underline text-sky-50 hover:text-sky-300" href = {profile.external_urls.spotify} >{profile.display_name}</a>
+                    <a target="_blank" rel="noopener noreferrer" class="lg:text-5xl text-xl font-bold no-underline hover:underline text-sky-50 hover:text-sky-300" href = {profile.external_urls.spotify} >{profile.display_name}</a>
                 </h1>
                 <div class="flex justify-center space-x-10 lg:space-x-32 md:space-x-20 xl:space-x-32 mb-10 mt-4">
                 <div class="text-center">
