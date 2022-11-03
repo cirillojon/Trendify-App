@@ -11,13 +11,13 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                             target="_blank" rel="noopener noreferrer"
                             class="filter hover:grayscale hover:contrast-100">
                         <img alt = "profile-profile" src={artist.images[2].url} 
-                        class="object-scale-down pr-auto w-14 h-14 rounded-full aspect-square "/>
+                        class="object-content pr-auto lg:w-14 lg:h-14 w-12 h-12 rounded-full aspect-square "/>
                     </a>
                 </span>
                 <div class = "mt-2">
                     <a target="_blank" rel="noopener noreferrer" href = {artist.external_urls.spotify}
                         class = "no-underline hover:underline text-slate-50 hover:text-sky-300">
-                        <p class="text-xl font-medium">{artist.name}</p>
+                        <p class="lg:text-xl text-sm font-medium">{artist.name}</p>
                     </a>
 
                 </div>
@@ -32,25 +32,26 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
                         class="filter hover:grayscale hover:contrast-100">
-                    <img alt = "profile-profile" src={track.album.images[0].url} class="aspect-square w-14 h-14 rounded-full "/>
+                    <img alt = "profile-profile" src={track.album.images[0].url} 
+                        class="object-content lg:w-14 lg:h-14 w-12 h-12 rounded-full "/>
                     </a>
                 </span>
                 <div class = "mt-2">
                     <p>
                         <a target="_blank" rel="noopener noreferrer" 
                             class="no-underline hover:underline 
-                            text-slate-50 hover:text-sky-300 text-xl font-medium" href = {track.external_urls.spotify}>
+                            text-slate-50 hover:text-sky-300 lg:text-xl text-s font-medium" href = {track.external_urls.spotify}>
                                 {track.name}</a>
                     </p>
-                    <p class="text-sm -mt-4 text-slate-300">{track.album.name}</p>
-                    <p class="text-xs -mt-4 text-slate-400">{track.artists[0].name}</p>
+                    <p class="lg:text-sm text-xs -mt-4 text-slate-300">{track.album.name}</p>
+                    <p class="lg:text-xs text-xs -mt-4 text-slate-400">{track.artists[0].name}</p>
                 </div>
             </article>
         )
     })
 
   return (
-    <div class = "ml-auto mr-auto px-10">
+    <div class = "ml-auto mr-auto lg:px-10 px-2">
         <div class="ml-auto mr-auto min-h-fit lg:w-3/6 flex items-center justify-center">
             <div class="p-6 rounded-xl w-full">
                 <img src={topTracks[0].album.images[0].url}
