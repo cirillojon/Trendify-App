@@ -40,18 +40,23 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     </a>
                 </span>
                 <div class = "mt-2">
-                    <p>
+                    <p class = "overflow-hidden truncate lg:w-60 w-96 text-slate-50 hover:text-sky-300"> 
                         <a target="_blank" rel="noopener noreferrer" 
-                            class="no-underline hover:underline 
-                            text-slate-50 hover:text-sky-300 lg:text-xl text-s font-medium" href = {track.external_urls.spotify}>
+                            class="no-underline hover:underline text-slate-50 hover:text-sky-300 
+                                lg:text-xl text-s font-medium" href = {track.external_urls.spotify}>
                                 {track.name}</a>
                     </p>
-                    <p class="lg:text-sm text-xs -mt-4 text-slate-300">{track.album.name}</p>
-                    <p class="lg:text-xs text-xs -mt-4 text-slate-400">{track.artists[0].name}</p>
+                    <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-48">{track.album.name}</p>
+                    <p class="lg:text-xs text-xs -mt-4 text-slate-400 overflow-hidden truncate w-48">{track.artists[0].name}</p>
                 </div>
             </a>
         )
     })
+
+    // Check if user have a profile picture, 
+    // if they don't the picture of their top artist will be set as their picture
+    const avatarImage = (profile.images.length === 0) ? 
+    `${topArtists[0].images[0].url}` : `${profile.images[0].url}`;
 
   return (
     <div class = "ml-auto mr-auto lg:px-10 px-2 pb-20">
@@ -60,7 +65,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                 <img draggable="false" src={topTracks[0].album.images[0].url}
                     class="rounded-xl h-60 w-full object-cover shadow" alt=""/>
                 <div class="flex justify-center relative">
-                <img draggable="false" alt = "profile" src={profile.images[0].url} 
+                <img draggable="false" alt = "profile" src={avatarImage} 
                     class="w-32 h-32 object-cover rounded-full border-8 border-[#111827] shadow absolute -top-16" />
                 </div>
                 <h1 class="text-slate-50 text-5xl mt-20 text-center font-bold mb-1 flex justify-center items-center space-x-2">
@@ -92,13 +97,16 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     </div>
                 </div>
                 </div>
-                <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 
-                    border-4 border-slate-400 rounded-full shadow
-                    font-bold lg:py-3 lg:px-5 px-3 py-1
-                    relative mb-2 block transition-all 
-                    duration-300 ml-auto mr-auto lg:text-xl text-sm font-bold tracking-wider">
-                LOGOUT
-                </button>
+                <a href = "/landing" class = "no-underline">
+                    <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 
+                        border-4 border-slate-400 rounded-full shadow
+                        font-bold lg:py-3 lg:px-5 px-3 py-1
+                        relative mb-2 block transition-all 
+                        duration-300 ml-auto mr-auto lg:text-xl text-sm font-bold tracking-wider">
+                    LOGOUT
+                    </button>
+                </a>
+
             </div>
         </div>
 
@@ -106,7 +114,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
         <div class="grid lg:grid-flow-col grid-col-auto p-3 mr-auto ml-auto gap-2 max-w-screen-lg">
             <div class="col-span-2 w-full">
                 <div class = "flex -mb-4">
-                    <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top Artists</strong>
+                    <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top 10 Artists</strong>
                     <NavLink exact to='/topartist'>
                         <div class = "p-3 ml-auto">
                             <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold sm:py-2 sm:px-3 py-2 px-3 border-2 
@@ -122,7 +130,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
 
             <div class="col-span-2 w-full">
                 <div class = "flex -mb-4">
-                    <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top Tracks</strong>
+                    <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top 10 Tracks</strong>
                     <NavLink exact to='/toptracks'>
                         <div class = "p-3 ml-auto">
                             <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold sm:py-2 sm:px-3 py-2 px-3 border-2 

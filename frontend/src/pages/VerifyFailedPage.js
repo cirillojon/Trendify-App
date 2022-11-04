@@ -19,12 +19,12 @@ function VerifyFailedPage(){
                         </div>
                     </div>
                     <div>
-                        <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
+                        <img src="https://i.ibb.co/G9DC8S0/404-2.png" alt = "404"/>
                     </div>
                 </div>
             </div>
             <div>
-                <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
+                <img src="https://i.ibb.co/ck1SGFJ/Group.png" alt="404"/>
             </div>
         </div>
     );
