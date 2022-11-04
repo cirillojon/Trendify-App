@@ -172,10 +172,12 @@ function Login() {
               <div class="flex items-center justify-between">
                   <a href="/resetpage" class="text-sm font-medium text-sky-300 hover:text-sky-500 no-underline hover:underline text-primary-500">Forgot password?</a>
               </div>
-              <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800" onClick={doLogin}>Sign in to your account</button>
-              <div class="border-t-2 border-gray-600 flex items-center content-center">
-                <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Don't have account?</p>
-                <a href="/signup" class="mr-auto text-sm font-medium text-sky-300 hover:text-sky-500 no-underline hover:underline">Sign up</a>
+              <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 duration-300" onClick={doLogin}>Sign in to your account</button>
+              <div class="border-t-2 border-gray-600">
+                <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 text-center">Don't have account?&nbsp;
+                <a href="/signup" class="text-sky-300 hover:text-sky-500 no-underline hover:underline">Sign up</a>
+                </p>
+                
               </div>
               <p class="mt-2 -mb-1 text-xs text-gray-400">This site is protected by reCAPTCHA and the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Google Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en" target="_blank" rel="noopener noreferrer" class="no-underline hover:underline text-sky-300 hover:text-sky-500">Terms of Service</a> apply.</p>          
             </form>

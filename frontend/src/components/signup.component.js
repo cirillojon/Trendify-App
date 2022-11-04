@@ -280,7 +280,7 @@ function Signup() {
               <button 
                 onClick={doSignup} 
                 type="submit" 
-                class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center focus:ring-primary-800">Submit the form</button>
+                class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center focus:ring-primary-800 duration-300">Submit the form</button>
               <div class="border-t-2 border-gray-600 flex items-center content-center">
                 <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Already have an account?</p>
                 <a href="/" class="mr-auto text-sm font-medium no-underline hover:underline text-sky-300 hover:text-sky-500">Login here</a>

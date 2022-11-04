@@ -136,7 +136,7 @@ function ResetPassword() {
                     <input type="email" name="email" id="email" placeholder="Enter your email address" class="bg-gray-50 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600  placeholder-gray-500 text-white focus:ring-blue-500 focus:border-blue-500" 
                         required="" ref={(c) => email = c}></input>
                 </div>
-                <button type="submit" class="mb-4 w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 mt-8" onClick={doReset}>Send the link</button>
+                <button type="submit" class="mb-4 w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 mt-8 duration-300" onClick={doReset}>Send the link</button>
             
                 <div class="border-t-2 border-gray-600 flex items-center content-center">
                     <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Ready to sign in?</p>

@@ -75,13 +75,14 @@ else redirect_uri =  process.env.FRONTEND_URI;
 app.post('/api/register', async(req, res) => {
   let error = "";
   const {login, password, name} = req.body; 
+  let email = login.toLowerCase();
 
-  const checkUserEmail = await User.findOne({Login: login});
+  const checkUserEmail = await User.findOne({Login: email});
   if(checkUserEmail) return res.status(400).json({error: "Email Already Exists"});
 
   const newUser = new User({
     Name: name,
-    Login: login,
+    Login: email,
     Password: password,
     isVerified: false,
   });
@@ -104,7 +105,7 @@ app.post('/api/register', async(req, res) => {
   await emailVerificationToken.save();
 
   // Sends a verification email to verify the email
-  sendVerificationEmail(newUser._id, newUser.Name, login, emailVerificationToken.token);
+  sendVerificationEmail(newUser._id, newUser.Name, email, emailVerificationToken.token);
   
   
   ret = {error: error};
@@ -212,8 +213,9 @@ app.post("/api/passwordReset", async (req, res) => {
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 app.post('/api/login', async (req, res, next) => {
   const { login, password } = req.body;
+  let email = login.toLowerCase();
 
-  User.findOne({Login: login }).then((user) => {
+  User.findOne({Login: email }).then((user) => {
     if (!user) {
       return res.status(400).json({error: "No account belongs to that email"});
     }

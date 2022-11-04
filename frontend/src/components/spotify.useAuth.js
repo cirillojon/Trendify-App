@@ -19,8 +19,6 @@ export default function UseAuth(code) {
   const [accessToken, setAccessToken] = useState()
   const [refreshToken, setRefreshToken] = useState()
   const [expiresIn, setExpiresIn] = useState()
-  
-  console.log(refreshToken)
   useEffect(() => {axios
       .post(buildPath('spotifylogin'), {
         code,

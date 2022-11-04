@@ -38,10 +38,10 @@ function Body() {
             </h1>
             <p class="mb-8 leading-relaxed text-white">Copper mug try-hard pitchfork pour-over freegan heirloom neutra air plant cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk tote bag selvage hot chicken authentic tumeric truffaut hexagon try-hard chambray.</p>
             <div class="w-3/4 flex justify-center ml-auto mr-auto">
-                <button class="tracking-wider w-full h-16 px-6 text-black transition-colors duration-150 bg-[#a247db] focus:shadow-outline text-white text-base font-bold py-2 px-3 rounded-full hover:bg-[#8239af] hover:text-black">DOWNLOAD APP</button>
+                <button class="tracking-wider w-full h-16 px-6 text-black transition-colors duration-150 bg-[#a247db] focus:shadow-outline text-white text-base font-bold py-2 px-3 rounded-full hover:bg-[#8239af] hover:text-black duration-300">DOWNLOAD APP</button>
             </div>
             <div class="w-3/4 flex justify-center mt-3 ml-auto mr-auto">
-                <a class="tracking-wider w-full h-16 px-6 text-white text-base font-semibold py-2 px-3 transition-colors duration-150 bg-[#2ebd59] focus:shadow-outline hover:bg-[#259747] rounded-full" href={connectSpotify()}>Login With Spotify</a>
+                <a class="tracking-wider w-full h-16 px-6 text-white text-base font-semibold py-2 px-3 transition-colors duration-150 bg-[#2ebd59] focus:shadow-outline hover:bg-[#259747] rounded-full duration-300" href={connectSpotify()}>Login With Spotify</a>
             </div>
             </div>
             <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">

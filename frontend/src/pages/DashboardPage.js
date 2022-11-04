@@ -1,49 +1,30 @@
 import { useState, useEffect } from "react"
 import useAuth from "../components/spotify.useAuth"
-import Player from "../components/spotify.player"
-import TrackSearchResult from "../components/spotify.trackSearchResult"
 import SpotifyWebApi from "spotify-web-api-node"
-import axios from "axios"
-import { Container, Form } from "react-bootstrap"
 
+import Nav from "../components/spotify/spotify.nav"
+import Profile from "../components/spotify/spotify.profile"
+import Tracks from "../components/spotify/spotify.tracks"
+import Artists from "../components/spotify/spotify.artists"
+import Library from "../components/spotify/spotify.library"
+import Playlists from "../components/spotify/spotify.playlists"
 
-import Profile from "../components/spotify.profile"
-import Nav from "../components/spotify.nav"
-
-const app_name = 'trendify-project'
-function buildPath(route)
-{
-  if (process.env.NODE_ENV === 'production') 
-  {
-      return 'https://' + app_name +  '.herokuapp.com/' + route;
-  }
-  else
-  {        
-      return 'http://localhost:5000/' + route;
-  }
-}
 
 const spotifyApi = new SpotifyWebApi({
     clientId: "abb24fee7b8443d3bab993fe8504fbab",
   })
   
-export default function Dashboard({ code }) {  
-    console.log(code)  
+export default function Dashboard({ code }) {   
+    const currentPath = window.location.pathname
     const accessToken = useAuth(code)
-    const [search, setSearch] = useState("")
-    const [searchResults, setSearchResults] = useState([])
-    const [playingTrack, setPlayingTrack] = useState()
 
+    // Stores the result from the api calls
     const [user, setUser] = useState();
     const [numFollowing, setNumFollowing] = useState();
     const [playlist, setPlaylist] = useState();
     const [topArtists, setTopArtists] = useState();
     const [topTracks, setTopTracks] = useState();
 
-function chooseTrack(track) {
-    setPlayingTrack(track)
-    setSearch("")
-}
 
 // ACCESS TOKEN
 useEffect(() => {
@@ -51,37 +32,8 @@ useEffect(() => {
     spotifyApi.setAccessToken(accessToken)
 }, [accessToken])
 
-useEffect(() => {
-    if (!search) return setSearchResults([])
-    if (!accessToken) return
 
-    let cancel = false
-    spotifyApi.searchTracks(search).then(res => {
-        if (cancel) return
-        setSearchResults(
-            res.body.tracks.items.map(track => {
-            const smallestAlbumImage = track.album.images.reduce(
-                (smallest, image) => {
-                if (image.height < smallest.height) return image
-                return smallest
-                },
-                track.album.images[0]
-            )
-
-            return {
-                artist: track.artists[0].name,
-                title: track.name,
-                uri: track.uri,
-                albumUrl: smallestAlbumImage.url,
-            }
-            })
-        )
-    })
-
-    return () => (cancel = true)
-}, [search, accessToken])
-
-// USER PROFILE
+// AUTHENTICATED USER
 useEffect(() => {
     if(!accessToken) return
     spotifyApi.getMe().then(res => {
@@ -89,9 +41,9 @@ useEffect(() => {
         setUser(
             res.body
         )
-        
     });
 }, [accessToken])
+
 
 // FOLLOWING 
 useEffect(() => {
@@ -147,18 +99,53 @@ useEffect(() => {
 );}, [accessToken])
 
 
-
 return (
     <div class = "bg-[#111827] min-h-screen font-poppins">
-        <Nav/>
-        <Profile 
+        <Nav />
+        {currentPath.includes('/landing') ? 
+            <Profile     
             profile = {user}
             numFollowing = {numFollowing}
             playlist = {playlist}
             topTracks = {topTracks}
             topArtists = {topArtists}
-        />
+            /> : 
+        null }
+        {currentPath.includes('/toptracks') ? 
+            <Tracks path = '/toptracks'      
+            profile = {user}
+            numFollowing = {numFollowing}
+            playlist = {playlist}
+            topTracks = {topTracks}
+            topArtists = {topArtists}
+        /> : 
+        null }
+        {currentPath.includes('/topartist') ? 
+            <Artists     
+            profile = {user}
+            numFollowing = {numFollowing}
+            playlist = {playlist}
+            topTracks = {topTracks}
+            topArtists = {topArtists}
+            /> : 
+        null }
+        {currentPath.includes('/library') ? 
+            <Library     
+            profile = {user}
+            numFollowing = {numFollowing}
+            playlist = {playlist}
+            topTracks = {topTracks}
+            topArtists = {topArtists}
+            /> : 
+        null }
+        {currentPath.includes('/playlist') ? 
+            <Playlists     
+            profile = {user}
+            numFollowing = {numFollowing}
+            playlist = {playlist}
+            topTracks = {topTracks}
+            topArtists = {topArtists}
+            /> : 
+        null }
     </div>
-)
-}
-  
+)}

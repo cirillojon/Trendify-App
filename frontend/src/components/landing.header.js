@@ -14,7 +14,7 @@ function Header() {
         <img select draggable="false" class="" style={{width: 200}} src={logo} alt="Trendify"></img>
         <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
         </nav>
-        <button onClick={logout} class="tracking-wider w-auto h-10 text-white text-sm font-bold py-2 px-4 transition-colors duration-150 bg-[#1d4ed8]  focus:shadow-outline hover:bg-[#173ead] rounded-full">LOGOUT
+        <button onClick={logout} class="tracking-wider w-auto h-10 text-white text-sm font-bold py-2 px-4 transition-colors duration-300 bg-[#1d4ed8]  focus:shadow-outline hover:bg-[#173ead] rounded-full">LOGOUT
         </button>
       </div>
     </header>

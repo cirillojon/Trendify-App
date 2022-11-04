@@ -165,7 +165,7 @@ const PasswordResetPage2 = () =>
                       </div>  
                   </div>
               </div>
-                <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 mt-4" onClick={attemptResetPassword}>Reset your password</button>
+                <button type="submit" class="w-full text-white bg-[#8239af] hover:bg-[#713299] focus:ring-4 focus:outline-none focus:ring-[#8f4db7] font-medium rounded-full text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 mt-4 duration-300" onClick={attemptResetPassword}>Reset your password</button>
             </form>
                 <div class="border-t-2 border-gray-600 flex items-center content-center">
                     <p class="mt-3 text-center text-sm font-normal text-gray-400 mr-1 ml-auto">Ready to sign in?</p>
