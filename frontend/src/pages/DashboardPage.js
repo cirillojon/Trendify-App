@@ -8,6 +8,7 @@ import Tracks from "../components/spotify/spotify.tracks"
 import Artists from "../components/spotify/spotify.artists"
 import Library from "../components/spotify/spotify.library"
 import Playlists from "../components/spotify/spotify.playlists"
+import Track from "../components/spotify/spotify.track"
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -17,6 +18,8 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard({ code }) {   
     const currentPath = window.location.pathname;
     const accessToken = useAuth(code);
+
+    localStorage.setItem("accessToken", accessToken);
 
     // Stores the result from the api calls
     const [user, setUser] = useState();
