@@ -33,14 +33,12 @@ export default function Navigation() {
             <span class='hidden sm:block'>Tracks</span>
           </div>
         </NavLink>
-        <NavLink className={({ isActive }) => (isActive ? activeLink : normalLink)}  exact to='/library'>
+        <NavLink className={({ isActive }) => (isActive ? activeLink : normalLink)}  exact to='/player'>
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="lg:w-10 lg:h-10 w-6 h-6 mr-auto ml-auto">
-              <path d="M11.644 1.59a.75.75 0 01.712 0l9.75 5.25a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.712 0l-9.75-5.25a.75.75 0 010-1.32l9.75-5.25z" />
-              <path d="M3.265 10.602l7.668 4.129a2.25 2.25 0 002.134 0l7.668-4.13 1.37.739a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.71 0l-9.75-5.25a.75.75 0 010-1.32l1.37-.738z" />
-              <path d="M10.933 19.231l-7.668-4.13-1.37.739a.75.75 0 000 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 000-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 01-2.134-.001z" />
+              <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
             </svg>
-            <span class='hidden sm:block'>Library</span>
+            <span class='hidden sm:block'>Player</span>
           </div>
         </NavLink>
         <NavLink className={({ isActive }) => (isActive ? activeLink : normalLink)}  exact to='/playlist'>

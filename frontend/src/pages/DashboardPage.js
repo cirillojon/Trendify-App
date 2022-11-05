@@ -6,10 +6,8 @@ import Nav from "../components/spotify/spotify.nav"
 import Profile from "../components/spotify/spotify.profile"
 import Tracks from "../components/spotify/spotify.tracks"
 import Artists from "../components/spotify/spotify.artists"
-import Library from "../components/spotify/spotify.library"
+import Player from "../components/spotify/spotify.player"
 import Playlists from "../components/spotify/spotify.playlists"
-import Track from "../components/spotify/spotify.track"
-
 
 const spotifyApi = new SpotifyWebApi({
     clientId: "abb24fee7b8443d3bab993fe8504fbab",
@@ -33,8 +31,7 @@ export default function Dashboard({ code }) {
         if (!accessToken) return;
         spotifyApi.setAccessToken(accessToken);
     }, [accessToken])
-
-
+    
     // AUTHENTICATED USER
     useEffect(() => {
         if(!accessToken) return
@@ -130,8 +127,11 @@ export default function Dashboard({ code }) {
                 topArtists = {topArtists}
                 /> : 
             null }
-            {currentPath.includes('/library') ? 
-                <Library /> : 
+            {currentPath.includes('/player') ? 
+                <Player 
+                    accessToken={accessToken}
+                    user = {user}
+                /> : 
             null }
             {currentPath.includes('/playlist') ? 
                 <Playlists     

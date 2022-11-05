@@ -34,7 +34,7 @@ function App() {
         <Route path="/landing/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/topartist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/toptracks/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/library/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/player/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/playlist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/track/:trackId/:musicName/:albumName" element={<Track/>}/>
       </Route>
