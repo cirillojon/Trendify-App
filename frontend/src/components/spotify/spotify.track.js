@@ -17,9 +17,9 @@ const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
 })
 
-const gridCSS = "border-[#979792] border-opacity-50 border-solid border-t border-l border-r border-b pb-15 px-10";
+const gridCSS = "border-[#979792] border-opacity-50 border-solid border-t border-l border-r border-b lg:pb-15 pb-0 lg:px-10 px-2";
 const featureLabelCSS = "mb-4 text-xs text-slate-400";
-const featureTextCSS = "lg:text-3xl text-2xl font-bold mt-4 text-slate-200";
+const featureTextCSS = "lg:text-3xl text-xl font-bold mt-4 text-slate-200";
 
 const Track = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -127,7 +127,7 @@ const Track = () => {
                                         border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs duration-300 w-auto mr-auto ml-auto" onClick={closeTab}>Close Tab</button>
                             
                             <div class="graph lg:w-3/5 w-10/12 mr-auto ml-auto rounded p-3">
-                                <h3 class='text-3xl heading mb-2 mt-2 text-slate-50 text-center'>Track Features</h3>
+                                <h3 class='lg:text-3xl text-2xl heading mb-2 mt-2 text-slate-50 text-center'>Track Features</h3>
                                 <div class=''>
                                     <Bar
                                         width={300}
@@ -166,8 +166,8 @@ const Track = () => {
                             </div>
 
                             <div>
-                                <h3 class='text-3xl heading mb-3 mt-3 text-slate-50 text-center'>More Track Information</h3>
-                                <div class="grid grid-cols-5 justify-evenly lg:w-3/5 w-fit ml-auto mr-auto text-center"> 
+                                <h3 class='lg:text-3xl text-2xl heading mb-3 mt-3 text-slate-50 text-center'>More Track Information</h3>
+                                <div class="grid lg:grid-cols-5 grid-cols-3 justify-evenly lg:w-3/5 w-fit ml-auto mr-auto text-center"> 
                                     <div class = {gridCSS}>
                                         <h4 class = {featureTextCSS}>{formatDuration(features.duration_ms)}</h4>
                                         <p class = {featureLabelCSS}>Duration</p>
