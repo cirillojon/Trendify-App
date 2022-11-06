@@ -10,7 +10,7 @@ import Player from "../components/spotify/spotify.player"
 import Playlists from "../components/spotify/spotify.playlists"
 
 const spotifyApi = new SpotifyWebApi({
-    clientId: "abb24fee7b8443d3bab993fe8504fbab",
+    clientId: process.env.CLIENT_ID,
   })
   
 export default function Dashboard({ code }) {   
