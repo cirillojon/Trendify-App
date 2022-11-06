@@ -1,7 +1,14 @@
 import React from "react"
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from "axios";
 
-export default function Library({ profile, numFollowing, playlist, topTracks, topArtists }) {
-    if (!profile || !numFollowing || !playlist|| !topTracks || !topArtists ) return;
+const Library = () => {
+  const { trackID,  } = useParams();
+  var obj = {
+    trackID: trackID,
+  };
+  console.log(obj);
 
   return (
     <div class = "ml-auto mr-auto lg:px-10 px-2">
@@ -13,6 +20,7 @@ export default function Library({ profile, numFollowing, playlist, topTracks, to
         </div>
     </div>
   )
-}
+};
 
+export default Library;
 

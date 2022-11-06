@@ -1,10 +1,16 @@
 import logo from '../images/logoWhite.png';
 import tokenStorage from '../tokenStorage';
+import SpotifyWebApi from "spotify-web-api-node"
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.CLIENT_ID,
+})
 
 function Header() {
   const logout = event => {
     event.preventDefault();
     tokenStorage.removeToken();
+    spotifyApi.resetCredentials();
     window.location.href = '/';
   };
 

@@ -1,5 +1,6 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LoginPage from './pages/LoginPage'
@@ -13,6 +14,7 @@ import VerifySuccessfulPage from './pages/VerifySuccessfulPage'
 import DashboardPage from './pages/DashboardPage';
 
 import PrivateRoute from "./routes/PrivateRoute";
+import Track from './components/spotify/spotify.track';
 
 const code = new URLSearchParams(window.location.search).get("code")
 function App() {
@@ -33,8 +35,9 @@ function App() {
         <Route path="/landing/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/topartist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/toptracks/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/library/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/player/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/playlist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/track/:trackId/:musicName/:albumName" element={<Track/>}/>
       </Route>
     </Routes>
   </BrowserRouter>

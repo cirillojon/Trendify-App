@@ -6,13 +6,12 @@ import Nav from "../components/spotify/spotify.nav"
 import Profile from "../components/spotify/spotify.profile"
 import Tracks from "../components/spotify/spotify.tracks"
 import Artists from "../components/spotify/spotify.artists"
-import Library from "../components/spotify/spotify.library"
+import Player from "../components/spotify/spotify.player"
 import Playlists from "../components/spotify/spotify.playlists"
 import Track from "../components/spotify/spotify.track"
 
-
 const spotifyApi = new SpotifyWebApi({
-    clientId: "abb24fee7b8443d3bab993fe8504fbab",
+    clientId: process.env.CLIENT_ID,
   })
   
 export default function Dashboard({ code }) {   
@@ -40,31 +39,6 @@ export default function Dashboard({ code }) {
         spotifyApi.setAccessToken(accessToken);
     }, [accessToken])
 
-
-    // AUTHENTICATED USER
-    useEffect(() => {
-        if(!accessToken) return
-        spotifyApi.getMe().then(res => {
-            console.log(res.body)
-            setUser(
-                res.body
-            )
-        });
-    }, [accessToken])
-
-    // FOLLOWING 
-    useEffect(() => {
-        if(!accessToken) return
-        spotifyApi.getFollowedArtists().then(
-            function(data) {
-            console.log("FOLLOWED ARTISTS " + data.body.artists.total);
-            setNumFollowing(data.body.artists.total);
-            },
-            function(err) {
-            console.log('Something went wrong..', err.message);
-            }
-    );}, [accessToken])
-
     // PLAYLIST 
     useEffect(() => {
         if(!accessToken) return
@@ -79,7 +53,7 @@ export default function Dashboard({ code }) {
             }
     );}, [accessToken, user])
 
-    // // TOP ARTISTS
+    // TOP ARTISTS
     useEffect(() => {
         console.log(timeRange);
         if(!accessToken) return
@@ -96,7 +70,7 @@ export default function Dashboard({ code }) {
     // TOP TRACKS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopTracks()
+        spotifyApi.getMyTopTracks({time_range: "long_term"})
         .then(function(data) {
             let topTracks = data.body.items;
             console.log("your top tracks", topTracks);
@@ -140,6 +114,12 @@ export default function Dashboard({ code }) {
             null }
             {currentPath.includes('/library') ? 
                 <Library /> : 
+            null }
+            {currentPath.includes('/player') ? 
+                <Player 
+                    accessToken={accessToken}
+                    user = {user}
+                /> : 
             null }
             {currentPath.includes('/playlist') ? 
                 <Playlists     
