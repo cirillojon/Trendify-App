@@ -7,7 +7,7 @@ export default function Navigation() {
 
   return (
     <div class="z-50 fixed bottom-0 shadow lg:left-0 w-full lg:w-24 bg-[#070a10] shadow-inner lg:h-screen lg:pt-16">
-      <div class='lg:mt-16 sm:mt-0 mt-1 lg:space-y-0 flex lg:flex-col h-auto'>
+      <div class='lg:mt-10 sm:mt-0 mt-0 lg:space-y-0 flex lg:flex-col h-auto'>
       <img select draggable="false" class="lg:w-20 lg:h-20 w-16 h-16 object-cover p-2 ml-auto mr-auto lg:mb-10 hidden lg:block" src={logo} alt="Trendify"></img>  
       <NavLink className={({ isActive }) => (isActive ? activeLink : normalLink)} exact to='/landing'>
           <div>
