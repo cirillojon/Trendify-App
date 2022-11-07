@@ -43,9 +43,7 @@ export default function Dashboard({ code }) {
         if(!accessToken) return
         spotifyApi.getMe().then(res => {
             console.log(res.body)
-            setUser(
-                res.body
-            )
+            setUser(res.body)
         });
     }, [accessToken])
 

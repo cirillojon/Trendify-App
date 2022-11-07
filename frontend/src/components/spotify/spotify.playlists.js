@@ -1,8 +1,15 @@
 import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
+import ErrorMessage from "./spotify.error"
 
 export default function Playlist({playlist, recents}) {
+
   const [isShown, setIsShown] = useState(true);
+  if(playlist.length < 1 || recents.length < 1) {
+    return (
+        <ErrorMessage />
+    )
+} 
 
   if (!playlist || !recents ) return;
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
@@ -28,7 +35,7 @@ export default function Playlist({playlist, recents}) {
     )
   })
 
-  const recent = recents.slice(0, 50).map((song) => {
+  const recent = recents.map((song) => {
     return (
       <a href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}/${song.track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
           class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto">
@@ -36,7 +43,7 @@ export default function Playlist({playlist, recents}) {
               <a href = {song.track.external_urls.spotify} 
                   target="_blank" rel="noopener noreferrer"
                   class="filter hover:grayscale hover:contrast-100">
-              <img alt = "profile-profile" draggable="false" src={song.track.album.images[0].url} 
+              <img alt = "profile-profile" draggable="false" src={song.track.album.images[2].url} 
                   class="object-content lg:w-16 lg:h-16 md:w-14 md:h-14 sw-12 h-12 rounded-full "/>
               </a>
           </span>
