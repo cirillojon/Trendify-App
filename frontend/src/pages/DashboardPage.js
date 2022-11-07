@@ -77,7 +77,7 @@ export default function Dashboard({ code }) {
     // TOP ARTISTS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopArtists()
+        spotifyApi.getMyTopArtists({time_range: timeRange})
         .then(function(data) {
         let topArtists = data.body.items;
         //console.log(topArtists);
@@ -85,7 +85,7 @@ export default function Dashboard({ code }) {
         }, function(err) {
         console.log('Something went wrong!', err);
         }
-    );}, [accessToken])
+    );}, [accessToken, timeRange])
 
     // TOP TRACKS 
     useEffect(() => {
