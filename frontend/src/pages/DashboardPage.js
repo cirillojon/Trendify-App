@@ -26,6 +26,11 @@ export default function Dashboard({ code }) {
     const [topArtists, setTopArtists] = useState();
     const [topTracks, setTopTracks] = useState();
 
+    const [timeRange, setTimeRange] = useState('medium_term');
+    const updateTimeRange = (timeTerm) => {
+        setTimeRange(timeTerm);
+    } 
+
     // ACCESS TOKEN
     useEffect(() => {
         if (!accessToken) return;
@@ -86,7 +91,7 @@ export default function Dashboard({ code }) {
     // TOP TRACKS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopTracks({time_range: "long_term"})
+        spotifyApi.getMyTopTracks()
         .then(function(data) {
             let topTracks = data.body.items;
             console.log("your top tracks", topTracks);
@@ -125,6 +130,7 @@ export default function Dashboard({ code }) {
                 playlist = {playlist}
                 topTracks = {topTracks}
                 topArtists = {topArtists}
+                setTimeRange = {updateTimeRange}
                 /> : 
             null }
             {currentPath.includes('/player') ? 
