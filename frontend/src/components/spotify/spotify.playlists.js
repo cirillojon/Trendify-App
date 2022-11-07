@@ -30,7 +30,7 @@ export default function Playlist({playlist, recents}) {
 
   const recent = recents.slice(0, 50).map((song) => {
     return (
-      <a href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
+      <a href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}/${song.track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
           class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto">
           <span class="rounded-full lg:ml-3 ml-2">
               <a href = {song.track.external_urls.spotify} 
@@ -45,7 +45,7 @@ export default function Playlist({playlist, recents}) {
                 <p class = "lg:text-xl text-soverflow-hidden truncate lg:w-9/12 w-40 text-slate-50 hover:text-sky-300"> 
                       <a target="_blank" rel="noopener noreferrer" 
                           class="no-underline hover:underline text-slate-50 hover:text-sky-300 
-                               font-medium" href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}`}>
+                               font-medium" href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}/${song.track.artists[0].name.replace('/', '')}`}>
                               {song.track.name}</a>
                 </p>
               </div>
@@ -61,27 +61,47 @@ export default function Playlist({playlist, recents}) {
   })
 
   return (
-    <div class = "ml-auto mr-auto lg:px-10 pb-20 md:pb-32 lg:pt-5 pt-3">
-        <div className="sm:pl-5 ml-auto mr-auto text-gray-500 lg:space-x-4 space-x-3 mb-6 lg:w-3/6 w-11/12 ">
-          <button class={isShown ? active : notActive}
-            onClick={(event) => showRecents(event, true)}>
-            Recents
-          </button>
-          <button class={isShown ? notActive : active}
-            onClick={(event) => showRecents(event, false)}>
-            Playlists
-          </button>
+    <div>
+      {playlist && recents ? 
+        <div class = "ml-auto mr-auto lg:px-10 pb-20 md:pb-32 lg:pt-5 pt-3">
+          <div className="sm:pl-5 ml-auto mr-auto text-gray-500 lg:space-x-4 space-x-3 mb-6 lg:w-3/6 w-11/12 ">
+            <button class={isShown ? active : notActive}
+              onClick={(event) => showRecents(event, true)}>
+              Recents
+            </button>
+            <button class={isShown ? notActive : active}
+              onClick={(event) => showRecents(event, false)}>
+              Playlists
+            </button>
+          </div>
+          {isShown ?
+            <div class="w-full">
+            {recent}
+            </div>
+            :
+            <div class = "mr-auto ml-auto lg:w-4/6 md:w-10/12 w-fit lg:gap-5 md:gap-4 gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 justify-evenly">
+            {playlists}
+            </div>
+          }
         </div>
-        {isShown ?
-          <div class="w-full">
-          {recent}
-          </div>
-          :
-          <div class = "mr-auto ml-auto lg:w-4/6 md:w-10/12 w-fit lg:gap-5 md:gap-4 gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 justify-evenly">
-          {playlists}
-          </div>
-        }
+        :
+        <div class = "flex h-screen justify-center items-center">
+              <div class="
+                spinner-border
+                animate-spin
+                inline-block
+                w-8
+                h-8
+                border-4
+                rounded-full
+                text-purple-500
+                " role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+      }
     </div>
+    
   )
 }
 

@@ -35,7 +35,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
 
     const tracks = topTracks.slice(0, 10).map((track) => {
         return (
-            <a href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
+            <a href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200">
                 <span class="rounded-full ml-3">
                     <a href = {track.external_urls.spotify} 
@@ -49,7 +49,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <p class = "overflow-hidden truncate lg:w-60 w-48 text-slate-50 hover:text-sky-300"> 
                         <a target="_blank" rel="noopener noreferrer" 
                             class="no-underline hover:underline text-slate-50 hover:text-sky-300 
-                                lg:text-xl text-s font-medium" href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}`}>
+                                lg:text-xl text-s font-medium" 
+                                href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`}>
                                 {track.name}</a>
                     </p>
                     <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-48">{track.album.name}</p>

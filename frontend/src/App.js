@@ -37,7 +37,7 @@ function App() {
         <Route path="/toptracks/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/player/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/playlist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/track/:trackId/:musicName/:albumName" element={<Track/>}/>
+        <Route path="/track/:trackId/:musicName/:albumName/:artist" element={<Track/>}/>
       </Route>
     </Routes>
   </BrowserRouter>

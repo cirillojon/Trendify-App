@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom';
 import SpotifyWebApi from "spotify-web-api-node"
+// eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Bar }            from 'react-chartjs-2'
 import ErrorMessage from "./player/ErrorMessage"
@@ -48,21 +49,19 @@ const Track = () => {
     // GET SONG INFORMATION
     useEffect(() => 
 	{
-        if(!accessToken && !songId && !album && !title) return;
+        if(!accessToken && !songId && !album && !title && !artist) return;
         spotifyApi.getAudioFeaturesForTrack(songId)
         .then(function(songFeatures) {
             setFeatures(songFeatures.body);
-            console.log(songFeatures.body);
 
-            spotifyApi.searchTracks(`track: ${title} album: ${album}}`)
+            spotifyApi.searchTracks(`track: ${title} album: ${album} album: ${artist}}`)
             .then(function(songData) {
-                console.log(songData.body)
+                console.log(songData.body);
                 setSong( songData.body)
             });
 
             spotifyApi.getAudioAnalysisForTrack(songId)
             .then(function(data) {
-                console.log(data.body);
                 setAudioInfo(data.body);
             });
 
@@ -70,7 +69,7 @@ const Track = () => {
             console.log(err);
             setError(err);
         });
-	}, [songId, album, title, accessToken,])
+	}, [songId, album, title, accessToken, artist])
 
 
 	const feats = {
@@ -118,8 +117,8 @@ const Track = () => {
                                 </div>
                                 <div class="p-2">
                                     <h3 class="text-white lg:text-lg text-sm -mb-1 overflow-hidden truncate lg:w-60 w-44 ">{song.tracks.items[0].name}</h3>
-                                    <p class="text-gray-400 -mb-1 overflow-hidden truncate lg:w-60 w-36 ">{song.tracks.items[0].album.name}</p>
-                                    <p class="text-gray-400 -mb-1">{song.tracks.items[0].artists[0].name}</p>
+                                    <p class="text-gray-400 -mb-1 lg:text-md md:text-sm text-xs overflow-hidden truncate lg:w-60 md:w-52 w-44">{song.tracks.items[0].album.name}</p>
+                                    <p class="text-gray-400 -mb-1 lg:text-md md:text-sm text-xs overflow-hidden truncate lg:w-60 md:w-52 w-44">{song.tracks.items[0].artists[0].name}</p>
                                 </div>
                             </a>
 
@@ -215,7 +214,20 @@ const Track = () => {
 
                         </div>
                         : 
-                        <div class='loader' />
+                        <div class = "flex h-screen justify-center items-center">
+                            <div class="
+                                spinner-border
+                                animate-spin
+                                inline-block
+                                w-8
+                                h-8
+                                border-4
+                                rounded-full
+                                text-purple-500
+                                " role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
                     }
                 </div>
                 :

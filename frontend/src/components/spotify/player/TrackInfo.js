@@ -1,7 +1,7 @@
 export default function TrackInfo({song}) {
     if(!song) return;
     return(
-        <a href = {`/track/${song.id}/${song.title.replace('/', '')}/${song.album.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
+        <a href = {`/track/${song.id}/${song.title.replace('/', '')}/${song.album.replace('/', '')}/${song.artist.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
             class="bg-[#292f3d] shadow-2xl hover:shadow-[#713299]/50 hover:bg-[#3e4450] rounded p-3 mr-auto ml-auto w-fit lg:mt-20 m-auto sm:mb-3 duration-500 no-underline">
             <div class="group relative">
                 <img class="w-full md:w-64 w-48 block rounded mr-auto ml-auto" src={song.albumArt} alt="" draggable="false"/>
