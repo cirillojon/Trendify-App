@@ -8,7 +8,6 @@ import Tracks from "../components/spotify/spotify.tracks"
 import Artists from "../components/spotify/spotify.artists"
 import Player from "../components/spotify/spotify.player"
 import Playlists from "../components/spotify/spotify.playlists"
-import Track from "../components/spotify/spotify.track"
 
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
@@ -27,17 +26,35 @@ export default function Dashboard({ code }) {
     const [topArtists, setTopArtists] = useState();
     const [topTracks, setTopTracks] = useState();
 
-    const [timeRange, setTimeRange] = useState('medium_term');
-
-    const updateTimeRange = (timeTerm) => {
-        setTimeRange(timeTerm);
-    } 
-
     // ACCESS TOKEN
     useEffect(() => {
         if (!accessToken) return;
         spotifyApi.setAccessToken(accessToken);
     }, [accessToken])
+    
+    // AUTHENTICATED USER
+    useEffect(() => {
+        if(!accessToken) return
+        spotifyApi.getMe().then(res => {
+            console.log(res.body)
+            setUser(
+                res.body
+            )
+        });
+    }, [accessToken])
+
+    // FOLLOWING 
+    useEffect(() => {
+        if(!accessToken) return
+        spotifyApi.getFollowedArtists().then(
+            function(data) {
+            console.log("FOLLOWED ARTISTS " + data.body.artists.total);
+            setNumFollowing(data.body.artists.total);
+            },
+            function(err) {
+            console.log('Something went wrong..', err.message);
+            }
+    );}, [accessToken])
 
     // PLAYLIST 
     useEffect(() => {
@@ -55,9 +72,8 @@ export default function Dashboard({ code }) {
 
     // TOP ARTISTS
     useEffect(() => {
-        console.log(timeRange);
         if(!accessToken) return
-        spotifyApi.getMyTopArtists({time_range: timeRange})
+        spotifyApi.getMyTopArtists()
         .then(function(data) {
         let topArtists = data.body.items;
         console.log(topArtists);
@@ -65,7 +81,7 @@ export default function Dashboard({ code }) {
         }, function(err) {
         console.log('Something went wrong!', err);
         }
-    );}, [accessToken, timeRange])
+    );}, [accessToken])
 
     // TOP TRACKS
     useEffect(() => {
@@ -109,11 +125,7 @@ export default function Dashboard({ code }) {
                 playlist = {playlist}
                 topTracks = {topTracks}
                 topArtists = {topArtists}
-                setTimeRange = {updateTimeRange}
                 /> : 
-            null }
-            {currentPath.includes('/library') ? 
-                <Library /> : 
             null }
             {currentPath.includes('/player') ? 
                 <Player 
