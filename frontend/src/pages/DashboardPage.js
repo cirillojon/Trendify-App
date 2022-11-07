@@ -25,6 +25,7 @@ export default function Dashboard({ code }) {
     const [playlist, setPlaylist] = useState();
     const [topArtists, setTopArtists] = useState();
     const [topTracks, setTopTracks] = useState();
+    const [recents, setRecents] = useState();
 
     const [timeRange, setTimeRange] = useState('medium_term');
     const updateTimeRange = (timeTerm) => {
@@ -53,7 +54,7 @@ export default function Dashboard({ code }) {
         if(!accessToken) return
         spotifyApi.getFollowedArtists().then(
             function(data) {
-            console.log("FOLLOWED ARTISTS " + data.body.artists.total);
+            //console.log("FOLLOWED ARTISTS " + data.body.artists.total);
             setNumFollowing(data.body.artists.total);
             },
             function(err) {
@@ -81,7 +82,7 @@ export default function Dashboard({ code }) {
         spotifyApi.getMyTopArtists()
         .then(function(data) {
         let topArtists = data.body.items;
-        console.log(topArtists);
+        //console.log(topArtists);
         setTopArtists(topArtists);
         }, function(err) {
         console.log('Something went wrong!', err);
@@ -94,8 +95,22 @@ export default function Dashboard({ code }) {
         spotifyApi.getMyTopTracks({time_range: "long_term"})
         .then(function(data) {
             let topTracks = data.body.items;
-            console.log("your top tracks", topTracks);
+            //console.log("your top tracks", topTracks);
             setTopTracks(topTracks)
+        }, function(err) {
+            console.log('Something went wrong!', err);
+        }
+    );}, [accessToken])
+    
+    // SHOW RECENTLY PLAYED TRACKS
+    useEffect(() => {
+        if(!accessToken) return
+        spotifyApi.getMyRecentlyPlayedTracks({
+            limit : 50
+        }).then(function(data) {
+            // Output items
+            setRecents(data.body.items)
+            console.log(data.body.items);
         }, function(err) {
             console.log('Something went wrong!', err);
         }
@@ -144,11 +159,8 @@ export default function Dashboard({ code }) {
                         null }
                         {currentPath.includes('/playlist') ? 
                             <Playlists     
-                            profile = {user}
-                            numFollowing = {numFollowing}
                             playlist = {playlist}
-                            topTracks = {topTracks}
-                            topArtists = {topArtists}
+                            recents = {recents}
                             /> : 
                         null }
                     </div>

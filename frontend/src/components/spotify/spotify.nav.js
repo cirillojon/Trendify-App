@@ -6,7 +6,7 @@ export default function Navigation() {
   const normalLink = "flex justify-center items-center sm:space-x-2 py-3 px-4 lg:px-6 lg:py-2 text-slate-400 hover:bg-[#202328] hover:text-slate-50 w-1/5 lg:w-full lg:border-l-4 border-transparent hover:border-[#a247db] no-underline duration-200";
 
   return (
-    <div class="z-50 fixed bottom-0 shadow lg:left-0 w-full lg:w-24 bg-[#070a10] shadow-inner lg:h-screen lg:pt-20">
+    <div class="z-50 fixed bottom-0 shadow lg:left-0 w-full lg:w-24 bg-[#070a10] shadow-inner lg:h-screen lg:pt-16">
       <div class='lg:mt-16 lg:space-y-0 flex lg:flex-col h-auto'>
       <img select draggable="false" class="lg:w-20 lg:h-20 w-16 h-16 object-cover p-2 ml-auto mr-auto lg:mb-14  hidden lg:block" src={logo} alt="Trendify"></img>  
       <NavLink className={({ isActive }) => (isActive ? activeLink : normalLink)} exact to='/landing'>
@@ -46,7 +46,7 @@ export default function Navigation() {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="lg:w-10 lg:h-10 w-6 h-6 mr-auto ml-auto">
               <path fill-rule="evenodd" d="M2.625 6.75a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875 0A.75.75 0 018.25 6h12a.75.75 0 010 1.5h-12a.75.75 0 01-.75-.75zM2.625 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zM7.5 12a.75.75 0 01.75-.75h12a.75.75 0 010 1.5h-12A.75.75 0 017.5 12zm-4.875 5.25a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875 0a.75.75 0 01.75-.75h12a.75.75 0 010 1.5h-12a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
             </svg>
-            <span class='hidden sm:block'>Playlist</span>
+            <span class='hidden sm:block'>Library</span>
           </div>
         </NavLink>
       </div>
