@@ -40,7 +40,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
                         class="filter hover:grayscale hover:contrast-100">
-                    <img alt = "profile-profile" draggable="false" src={track.album.images[0].url} 
+                    <img alt = "profile-profile" draggable="false" src={track.album.images[2].url} 
                         class="object-content lg:w-14 lg:h-14 w-12 h-12 rounded-full "/>
                     </a>
                 </span>

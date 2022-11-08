@@ -22,7 +22,7 @@ export default function Playlist({playlist, recents}) {
   const playlists = playlist.items.map((card) => {
     return (
       <a href = {card.external_urls.spotify} target="_blank" rel="noopener noreferrer"
-          class="bg-[#292f3d] shadow-2xl rounded 
+          class="bg-[#292f3d] shadow-2xl hover:shadow-[#713299]/50 hover:bg-[#3e4450] rounded 
             p-2 mr-auto ml-auto w-fit duration-500 no-underline
             hover:scale-105 transition duration-300 ease-in-out">
           <div class="group relative">
@@ -85,7 +85,7 @@ export default function Playlist({playlist, recents}) {
             {recent}
             </div>
             :
-            <div class = "mr-auto ml-auto lg:w-4/6 md:w-10/12 w-fit lg:gap-5 md:gap-4 gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 justify-evenly">
+            <div class = "mr-auto ml-auto w-fit lg:gap-5 md:gap-4 gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 justify-center content-center">
             {playlists}
             </div>
           }
