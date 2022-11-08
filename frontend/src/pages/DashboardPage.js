@@ -24,7 +24,9 @@ export default function Dashboard({ code }) {
     const [numFollowing, setNumFollowing] = useState();
     const [playlist, setPlaylist] = useState();
     const [topArtists, setTopArtists] = useState();
+    const [topTenArtists, setTopTenArtists] = useState();
     const [topTracks, setTopTracks] = useState();
+    const [topTenTracks, setTopTenTracks] = useState();
     const [recents, setRecents] = useState();
 
     const [timeRange, setTimeRange] = useState('long_term');
@@ -81,6 +83,12 @@ export default function Dashboard({ code }) {
             setTopArtists(topArtists);
 
         });
+        spotifyApi.getMyTopArtists({limit : 10 , time_range: "long_term"})
+        .then(function(data) {
+            let topArtists = data.body.items;
+            setTopTenArtists(topArtists);
+
+        });
     }, [accessToken, timeRange])
 
     // TOP TRACKS 
@@ -92,8 +100,14 @@ export default function Dashboard({ code }) {
             setTopTracks(topTracks)
         }, function(err) {
             console.log('Something went wrong!', err);
-        }
-    );}, [accessToken, timeRange])
+        });
+
+        spotifyApi.getMyTopTracks({limit : 10 , time_range: 'long_term'})
+        .then(function(data) {
+            let topTracks = data.body.items;
+            setTopTenTracks(topTracks)
+        });
+    }, [accessToken, timeRange])
     
     // SHOW RECENTLY PLAYED TRACKS
     useEffect(() => {
@@ -115,13 +129,13 @@ export default function Dashboard({ code }) {
             <>
                 {user && numFollowing && topTracks && topArtists && accessToken ?
                     <div>
-                        {currentPath.includes('/landing') ? 
+                        {currentPath.includes('/profile') ? 
                             <Profile     
                             profile = {user}
                             numFollowing = {numFollowing}
                             playlist = {playlist}
-                            topTracks = {topTracks}
-                            topArtists = {topArtists}
+                            topTracks = {topTenTracks}
+                            topArtists = {topTenArtists}
                             /> : 
                         null }
                         {currentPath.includes('/toptracks') ? 

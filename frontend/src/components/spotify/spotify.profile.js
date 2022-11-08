@@ -10,7 +10,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
         )
     } 
 
-    const artists = topArtists.slice(0, 10).map((artist) => {
+    const artists = topArtists.map((artist) => {
         return (
             <a href = {artist.external_urls.spotify} target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 h-20 hover:bg-[#3e4450] 
@@ -31,7 +31,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
         )
     })
 
-    const tracks = topTracks.slice(0, 10).map((track) => {
+    const tracks = topTracks.map((track) => {
         return (
             <a href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200
@@ -99,7 +99,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     </div>
                 </div>
                 </div>
-                <a href = "/landing" class = "no-underline">
+                <a href = "/" class = "no-underline">
                     <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 
                         border-4 border-slate-400 rounded-full shadow
                         font-bold lg:py-3 lg:px-5 px-3 py-1

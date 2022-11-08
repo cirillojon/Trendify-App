@@ -117,7 +117,7 @@ function Login() {
               navigate(location.state.from)
               //console.log("LOGIN");
             } else {
-              navigate("/landing");
+              navigate("/");
               //console.log("LANDING");
             }
           }

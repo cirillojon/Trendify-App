@@ -21,7 +21,7 @@ function App() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route path= "/" element={<LoginPage />} />
+      <Route path= "/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />}/>
       <Route path="/verification-successful" element={<VerifySuccessfulPage />}/>
       <Route path="/verification-failed" element={<VerifyFailedPage />}/>
@@ -32,11 +32,12 @@ function App() {
 
       
       <Route element={<PrivateRoute />}>
-        <Route path="/landing/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/topartist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/toptracks/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/player/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
-        <Route path="/playlist/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/profile" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/topartist" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/toptracks" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/player" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
+        <Route path="/playlist" element={code ? <DashboardPage code={code} /> : <LandingPage/>} />
         <Route path="/track/:trackId/:musicName/:albumName/:artist" element={<Track/>}/>
       </Route>
     </Routes>

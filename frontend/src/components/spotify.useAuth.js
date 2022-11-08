@@ -28,10 +28,10 @@ export default function UseAuth(code) {
         setRefreshToken(res.data.refreshToken)
         setExpiresIn(res.data.expiresIn)
 
-        window.history.pushState({}, null, "/landing")
+        window.history.pushState({}, null, "/profile")
       })
       .catch(() => {
-        window.location = "/landing"
+        window.location = "/"
       })
   }, [code])
 
@@ -48,7 +48,7 @@ export default function UseAuth(code) {
           setExpiresIn(res.data.expiresIn)
         })
         .catch(() => {
-          window.location = "/landing"
+          window.location = "/"
         })
     }, (expiresIn - 60) * 1000)
 

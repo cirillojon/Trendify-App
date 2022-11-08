@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { isLoggedIn } from "../tokenStorage";
 
 const PrivateRoute = ({
-  redirectPath = '/',
+  redirectPath = '/login',
   children
 }) => {
 

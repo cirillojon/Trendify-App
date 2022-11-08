@@ -13,7 +13,6 @@ const spotifyApi = new SpotifyWebApi({
 })
 
 export default function Player({ accessToken, user }) {   
-  console.log(accessToken)
   if (!accessToken){
     accessToken = localStorage.getItem("accessToken");
   } 
@@ -37,7 +36,6 @@ export default function Player({ accessToken, user }) {
   useEffect(() => {
     if (!playingTrack) return
     setSong(playingTrack)
-    console.log(song)
   }, [playingTrack, song])
 
   useEffect(() => {

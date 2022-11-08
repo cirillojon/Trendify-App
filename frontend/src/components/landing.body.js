@@ -19,11 +19,11 @@ const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
 //test
 function connectSpotify() {
   if (process.env.NODE_ENV === 'production') 
-    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=https://trendify-project.herokuapp.com/landing/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";  
+    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=https://trendify-project.herokuapp.com/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";  
   
   else {
     console.log(SCOPES_URL_PARAM);
-    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=http://localhost:3000/landing/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";    
+    return "https://accounts.spotify.com/authorize?client_id=abb24fee7b8443d3bab993fe8504fbab&response_type=code&redirect_uri=http://localhost:3000/&scope=" + SCOPES_URL_PARAM + "&response_type=code&show_dialog=true";    
   }
     
 }

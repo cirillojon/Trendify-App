@@ -56,7 +56,6 @@ const Track = () => {
 
             spotifyApi.searchTracks(`track: ${title} album: ${album} album: ${artist}}`)
             .then(function(songData) {
-                console.log(songData.body);
                 setSong( songData.body)
             });
 
