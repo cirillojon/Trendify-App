@@ -13,7 +13,9 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     const artists = topArtists.slice(0, 10).map((artist) => {
         return (
             <a href = {artist.external_urls.spotify} target="_blank" rel="noopener noreferrer"
-                class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 h-20 hover:bg-[#3e4450] no-underline duration-200">
+                class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 h-20 hover:bg-[#3e4450] 
+                no-underline text-slate-50 hover:text-sky-300
+                hover:scale-105 transition duration-300 ease-in-out">
                 <span class="rounded-full ml-3">
                     <a href = {artist.external_urls.spotify} 
                             target="_blank" rel="noopener noreferrer"
@@ -23,11 +25,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     </a>
                 </span>
                 <div class = "mt-2">
-                    <a target="_blank" rel="noopener noreferrer" href = {artist.external_urls.spotify}
-                        class = "no-underline hover:underline text-slate-50 hover:text-sky-300">
-                        <p class="lg:text-xl text-md font-medium">{artist.name}</p>
-                    </a>
-
+                    <p class="lg:text-xl text-md font-medium">{artist.name}</p>
                 </div>
             </a>
         )
@@ -36,7 +34,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     const tracks = topTracks.slice(0, 10).map((track) => {
         return (
             <a href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
-                class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200">
+                class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200
+                    hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
                 <span class="rounded-full ml-3">
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
@@ -46,12 +45,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     </a>
                 </span>
                 <div class = "mt-2">
-                    <p class = "overflow-hidden truncate lg:w-60 w-48 text-slate-50 hover:text-sky-300"> 
-                        <a target="_blank" rel="noopener noreferrer" 
-                            class="no-underline hover:underline text-slate-50 hover:text-sky-300 
-                                lg:text-xl text-s font-medium" 
-                                href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`}>
-                                {track.name}</a>
+                    <p class = "overflow-hidden truncate lg:w-60 w-48"> 
+                        {track.name}
                     </p>
                     <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-48">{track.album.name}</p>
                     <p class="lg:text-xs text-xs -mt-4 text-slate-400 overflow-hidden truncate w-48">{track.artists[0].name}</p>

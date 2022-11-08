@@ -13,7 +13,7 @@ export default function Playlist({playlist, recents}) {
 
   if (!playlist || !recents ) return;
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
-  const notActive = "text-slate-400 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";
+  const notActive = "text-slate-700 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";
 
   const showRecents = (event, showTheRecents) => {
     setIsShown(showTheRecents);
@@ -22,8 +22,9 @@ export default function Playlist({playlist, recents}) {
   const playlists = playlist.items.map((card) => {
     return (
       <a href = {card.external_urls.spotify} target="_blank" rel="noopener noreferrer"
-          class="bg-[#292f3d] shadow-2xl hover:shadow-[#713299]/50 hover:bg-[#3e4450] rounded 
-            p-2 mr-auto ml-auto w-fit duration-500 no-underline">
+          class="bg-[#292f3d] shadow-2xl rounded 
+            p-2 mr-auto ml-auto w-fit duration-500 no-underline
+            hover:scale-105 transition duration-300 ease-in-out">
           <div class="group relative">
               <img class="w-full lg:w-64 md:w-64 w-32 block rounded mr-auto ml-auto" src={card.images[0].url} alt="" draggable="false"/>
           </div>
@@ -38,7 +39,8 @@ export default function Playlist({playlist, recents}) {
   const recent = recents.map((song) => {
     return (
       <a href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}/${song.track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
-          class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto">
+          class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto
+            hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
           <span class="rounded-full lg:ml-3 ml-2">
               <a href = {song.track.external_urls.spotify} 
                   target="_blank" rel="noopener noreferrer"
@@ -50,10 +52,7 @@ export default function Playlist({playlist, recents}) {
           <div class = "mt-2 lg:w-11/12 md:w-11/12 w-9/12 ">
               <div class = "inline-flex lg:w-11/12 w-9/12 -mb-14">
                 <p class = "lg:text-xl text-soverflow-hidden truncate lg:w-9/12 w-40 text-slate-50 hover:text-sky-300"> 
-                      <a target="_blank" rel="noopener noreferrer" 
-                          class="no-underline hover:underline text-slate-50 hover:text-sky-300 
-                               font-medium" href = {`/track/${song.track.id}/${song.track.name.replace('/', '')}/${song.track.album.name.replace('/', '')}/${song.track.artists[0].name.replace('/', '')}`}>
-                              {song.track.name}</a>
+                {song.track.name}
                 </p>
               </div>
               <div class = "inline-flex w-full">

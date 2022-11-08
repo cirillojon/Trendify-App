@@ -27,6 +27,9 @@ export default function Dashboard({ code }) {
     const [topTracks, setTopTracks] = useState();
     const [recents, setRecents] = useState();
 
+    const [topArtistShortTerm, setTopArtistShortTerm] = useState();
+    const [topArtistMedTerm, setTopArtistMedTerm] = useState();
+
     const [timeRange, setTimeRange] = useState('medium_term');
     const updateTimeRange = (timeTerm) => {
         setTimeRange(timeTerm);
@@ -66,7 +69,7 @@ export default function Dashboard({ code }) {
         if(!user) return
         spotifyApi.getUserPlaylists(user.id).then(
             function(data) {
-                console.log('Retrieved playlists', data.body);
+                //console.log('Retrieved playlists', data.body);
                 setPlaylist(data.body);
             },
             function(err) {
@@ -77,15 +80,27 @@ export default function Dashboard({ code }) {
     // TOP ARTISTS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopArtists({time_range: timeRange})
+        spotifyApi.getMyTopArtists({limit : 50 , time_range: "long_term"})
         .then(function(data) {
-        let topArtists = data.body.items;
-        //console.log(topArtists);
-        setTopArtists(topArtists);
-        }, function(err) {
-        console.log('Something went wrong!', err);
-        }
-    );}, [accessToken, timeRange])
+            let topArtists = data.body.items;
+            console.log("lt " , topArtists);
+            setTopArtists(topArtists);
+
+            spotifyApi.getMyTopArtists({limit : 50 , time_range: "medium_term"})
+            .then(function(data) {
+                let topArtists = data.body.items;
+                console.log("mt ", topArtists);
+                setTopArtistMedTerm(topArtists);
+
+                spotifyApi.getMyTopArtists({limit : 50 , time_range: "short_term"})
+                .then(function(data) {
+                    let topArtists = data.body.items;
+                    console.log("st ",topArtists);
+                    setTopArtistShortTerm(topArtists);
+                });
+            });
+        });
+    }, [accessToken])
 
     // TOP TRACKS 
     useEffect(() => {
@@ -141,12 +156,9 @@ export default function Dashboard({ code }) {
                         null }
                         {currentPath.includes('/topartist') ? 
                             <Artists     
-                            profile = {user}
-                            numFollowing = {numFollowing}
-                            playlist = {playlist}
-                            topTracks = {topTracks}
                             topArtists = {topArtists}
-                            setTimeRange = {updateTimeRange}
+                            topArtistMedTerm = {topArtistMedTerm}
+                            topArtistShortTerm = {topArtistShortTerm}
                             /> : 
                         null }
                         {currentPath.includes('/player') ? 
