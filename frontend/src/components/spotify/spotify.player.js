@@ -6,7 +6,7 @@ import TrackInfo from "./player/TrackInfo"
 import TrackSearchResult from "./player/TrackSearchResult"
 import { Container } from "react-bootstrap"
 import trendiPlayerLogo from "../../images/TrendiPlayer.png"
-
+import spotifyLogo from "../../images/spotifyIcon.png"
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
@@ -91,7 +91,7 @@ export default function Player({ accessToken, user }) {
                 chooseTrack={chooseTrack}
               />
             ))}
-            <div class = "flex lg:h-5/6 h-4/5">
+            <div class = "flex h-full">
               <TrackInfo song = {song}/>
             </div>
           </div>
@@ -99,6 +99,10 @@ export default function Player({ accessToken, user }) {
             <Playback 
               accessToken={accessToken}
               trackUri = {playingTrack?.uri} />
+          </div>
+          <div class = "flex ml-auto mr-auto text-slate-400 justify-around items-center lg:pt-14 md:pt-14 pt-10 pb-12 w-fit">
+              <div class = "text-center lg:text-lg text-md pr-2">TrendiPlayer powered by Spotify</div>
+              <img class="w-full lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>
           </div>
         </Container>
         :

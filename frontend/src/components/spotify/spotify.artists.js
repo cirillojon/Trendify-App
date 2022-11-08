@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import spotifyLogo from "../../images/spotifyIcon.png"
 
 export default function Artists({ topArtists, setTimeRange }) {
   const [isShown, setIsShown] = useState("allTime");
@@ -68,6 +69,10 @@ export default function Artists({ topArtists, setTimeRange }) {
         </div>
           <div class={divClass}>
             {artists}
+          </div>
+          <div class = "w-fit flex ml-auto mr-auto text-slate-400 justify-around items-center pt-10">
+              <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
+              <img class="lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>
           </div>
         </div>
 

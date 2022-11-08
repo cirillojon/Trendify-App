@@ -6,7 +6,7 @@ import { Chart as ChartJS } from 'chart.js/auto'
 import { Bar }            from 'react-chartjs-2'
 import ErrorMessage from "./player/ErrorMessage"
 import { formatDuration, parsePitchClass } from './player/spotify.trackUtils';
-
+import spotifyLogo from "../../images/spotifyIcon.png"
 
 const closeTab = () => {
     window.opener = null;
@@ -39,8 +39,9 @@ const Track = () => {
 
     const songId = obj.trackId;
     const album = obj.albumName;
-    const title = obj.musicName;;
-
+    const title = obj.musicName;
+    const singer = obj.artist;;
+    console.log(songId, album, title, singer);
     // ACCESS TOKEN
     useEffect(() => {
         if (!accessToken) return;
@@ -49,12 +50,12 @@ const Track = () => {
     // GET SONG INFORMATION
     useEffect(() => 
 	{
-        if(!accessToken && !songId && !album && !title && !artist) return;
+        if(!accessToken && !songId && !album && !title && !singer && !song) return;
         spotifyApi.getAudioFeaturesForTrack(songId)
         .then(function(songFeatures) {
             setFeatures(songFeatures.body);
 
-            spotifyApi.searchTracks(`track: ${title} album: ${album} album: ${artist}}`)
+            spotifyApi.searchTracks(`track: ${title} album: ${album} artist: ${singer}}`)
             .then(function(songData) {
                 setSong( songData.body)
             });
@@ -68,7 +69,7 @@ const Track = () => {
             console.log(err);
             setError(err);
         });
-	}, [songId, album, title, accessToken, artist])
+	}, [songId, album, title, accessToken, singer, song])
 
 
 	const feats = {
@@ -112,7 +113,7 @@ const Track = () => {
                                 class="bg-[#292f3d] shadow-lg rounded p-3 mr-auto ml-auto no-underline
                                     hover:bg-[#3e4450]">
                                 <div class="group relative">
-                                    <img class="w-full md:w-64 w-48 block rounded" src={song.tracks.items[0].album.images[0].url} alt="" draggable="false"/>
+                                    <img class="w-full md:w-64 w-48 block" src={song.tracks.items[0].album.images[0].url} alt="" draggable="false"/>
                                 </div>
                                 <div class="p-2">
                                     <h3 class="text-white lg:text-lg text-sm -mb-1 overflow-hidden truncate lg:w-60 w-44 ">{song.tracks.items[0].name}</h3>
@@ -209,7 +210,10 @@ const Track = () => {
                                 </div> 
                             </div>
                             
-            
+                            <div class = "flex ml-auto mr-auto text-slate-400 justify-around items-center pt-10 w-fit">
+                                <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
+                                <img class="w-full lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>
+                            </div>
 
                         </div>
                         : 
@@ -233,7 +237,7 @@ const Track = () => {
                 <ErrorMessage
                     accessTokenError = {true}
                     spotifyPremiumError = {false}/>
-            }
+            }        
 		</div>
     )
   };

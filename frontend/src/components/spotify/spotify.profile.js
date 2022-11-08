@@ -1,6 +1,7 @@
 import React from "react"
 import {NavLink} from 'react-router-dom'
 import ErrorMessage from "./spotify.error"
+import spotifyLogo from "../../images/spotifyIcon.png"
 
 export default function Profile({ profile, numFollowing, playlist, topTracks, topArtists }) {
     if (!profile || !numFollowing || !playlist|| !topTracks || !topArtists ) return;
@@ -41,7 +42,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                         target="_blank" rel="noopener noreferrer"
                         class="filter hover:grayscale hover:contrast-100">
                     <img alt = "profile-profile" draggable="false" src={track.album.images[2].url} 
-                        class="object-content lg:w-14 lg:h-14 w-12 h-12 rounded-full "/>
+                        class="object-content lg:w-14 lg:h-14 w-12 h-12 ml-1"/>
                     </a>
                 </span>
                 <div class = "mt-2">
@@ -61,10 +62,10 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     `${topArtists[0].images[0].url}` : `${profile.images[0].url}`;
 
   return (
-    <div class = "ml-auto mr-auto lg:px-10 px-2 pb-20">
+    <div class = "ml-auto mr-auto lg:px-10 px-2 lg:pb-20 pb-24">
         <div class="ml-auto mr-auto min-h-fit lg:w-3/6 flex items-center justify-center">
             <div class="p-6 rounded-xl w-full">
-                <img draggable="false" src={topTracks[0].album.images[0].url}
+                <img draggable="false" src={topArtists[1].images[0].url}
                     class="rounded-xl h-60 w-full object-cover shadow" alt=""/>
                 <div class="flex justify-center relative">
                 <img draggable="false" alt = "profile" src={avatarImage} 
@@ -144,6 +145,11 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     {tracks}
                 </div>
             </div>
+        </div>
+
+        <div class = "w-fit flex ml-auto mr-auto text-slate-400 justify-around items-center">
+            <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
+            <img class="lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>
         </div>
     </div>
 

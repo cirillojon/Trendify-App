@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
+import spotifyLogo from "../../images/spotifyIcon.png"
 
 export default function Tracks({ topTracks, setTimeRange }) {
   const [isShown, setIsShown] = useState("allTime");
@@ -22,7 +23,7 @@ export default function Tracks({ topTracks, setTimeRange }) {
                   target="_blank" rel="noopener noreferrer"
                   class="filter hover:grayscale hover:contrast-100">
               <img alt = "profile-profile" draggable="false" src={tracks.album.images[2].url} 
-                  class="object-content lg:w-16 lg:h-16 md:w-14 md:h-14 sw-12 h-12 rounded-full "/>
+                  class="object-content lg:w-16 lg:h-16 md:w-14 md:h-14 sw-12 h-12 ml-1"/>
               </a>
           </span>
           <div class = "mt-2 lg:w-11/12 md:w-11/12 w-9/12 ">
@@ -76,6 +77,10 @@ export default function Tracks({ topTracks, setTimeRange }) {
           </div>
           <div class={divClass}>
             {tracks}
+          </div>
+          <div class = "flex ml-auto mr-auto text-slate-400 justify-around items-center pt-10 w-fit">
+              <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
+              <img class="w-full lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>
           </div>
         </div>
 
