@@ -51,12 +51,12 @@ export default function Playlist({playlist, recents}) {
           </span>
           <div class = "mt-2 lg:w-11/12 md:w-11/12 w-9/12 ">
               <div class = "inline-flex lg:w-11/12 w-9/12 -mb-14">
-                <p class = "lg:text-xl text-soverflow-hidden truncate lg:w-9/12 w-40 text-slate-50 hover:text-sky-300"> 
+                <p class = "lg:text-xl text-soverflow-hidden truncate w-fit text-slate-50 hover:text-sky-300"> 
                 {song.track.name}
                 </p>
               </div>
               <div class = "inline-flex w-full">
-                <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-48">{song.track.album.name}</p>
+                <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-full">{song.track.album.name}</p>
                 <p class="lg:text-sm text-xs -mt-4 text-slate-300 overflow-hidden truncate w-full text-right pr-3">{formatDuration(song.track.duration_ms)}</p>
               </div>
               

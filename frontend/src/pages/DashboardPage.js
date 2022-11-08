@@ -30,10 +30,8 @@ export default function Dashboard({ code }) {
     const [topArtistShortTerm, setTopArtistShortTerm] = useState();
     const [topArtistMedTerm, setTopArtistMedTerm] = useState();
 
-    const [timeRange, setTimeRange] = useState('medium_term');
-    const updateTimeRange = (timeTerm) => {
-        setTimeRange(timeTerm);
-    } 
+    const [topTracksShortTerm, setTopTracksShortTerm] = useState();
+    const [topTracksMedTerm, setTopTracksMedTerm] = useState();
 
     // ACCESS TOKEN
     useEffect(() => {
@@ -45,7 +43,6 @@ export default function Dashboard({ code }) {
     useEffect(() => {
         if(!accessToken) return
         spotifyApi.getMe().then(res => {
-            console.log(res.body)
             setUser(res.body)
         });
     }, [accessToken])
@@ -55,7 +52,6 @@ export default function Dashboard({ code }) {
         if(!accessToken) return
         spotifyApi.getFollowedArtists().then(
             function(data) {
-            //console.log("FOLLOWED ARTISTS " + data.body.artists.total);
             setNumFollowing(data.body.artists.total);
             },
             function(err) {
@@ -83,19 +79,16 @@ export default function Dashboard({ code }) {
         spotifyApi.getMyTopArtists({limit : 50 , time_range: "long_term"})
         .then(function(data) {
             let topArtists = data.body.items;
-            console.log("lt " , topArtists);
             setTopArtists(topArtists);
 
             spotifyApi.getMyTopArtists({limit : 50 , time_range: "medium_term"})
             .then(function(data) {
                 let topArtists = data.body.items;
-                console.log("mt ", topArtists);
                 setTopArtistMedTerm(topArtists);
 
                 spotifyApi.getMyTopArtists({limit : 50 , time_range: "short_term"})
                 .then(function(data) {
                     let topArtists = data.body.items;
-                    console.log("st ",topArtists);
                     setTopArtistShortTerm(topArtists);
                 });
             });
@@ -105,11 +98,22 @@ export default function Dashboard({ code }) {
     // TOP TRACKS 
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopTracks({time_range: "long_term"})
+        spotifyApi.getMyTopTracks({limit : 50 , time_range: "long_term"})
         .then(function(data) {
             let topTracks = data.body.items;
-            //console.log("your top tracks", topTracks);
             setTopTracks(topTracks)
+
+            spotifyApi.getMyTopTracks({limit : 50 , time_range: "medium_term"})
+            .then(function(data) {
+                let topTracks = data.body.items;
+                setTopTracksMedTerm(topTracks)
+
+                spotifyApi.getMyTopTracks({limit : 50 , time_range: "short_term"})
+                .then(function(data) {
+                    let topTracks = data.body.items;
+                    setTopTracksShortTerm(topTracks)
+                });
+            });
         }, function(err) {
             console.log('Something went wrong!', err);
         }
@@ -123,7 +127,6 @@ export default function Dashboard({ code }) {
         }).then(function(data) {
             // Output items
             setRecents(data.body.items)
-            console.log(data.body.items);
         }, function(err) {
             console.log('Something went wrong!', err);
         }
@@ -147,11 +150,9 @@ export default function Dashboard({ code }) {
                         null }
                         {currentPath.includes('/toptracks') ? 
                             <Tracks path = '/toptracks'      
-                            profile = {user}
-                            numFollowing = {numFollowing}
-                            playlist = {playlist}
                             topTracks = {topTracks}
-                            topArtists = {topArtists}
+                            topTracksMedTerm = {topTracksMedTerm}
+                            topTracksShortTerm = {topTracksShortTerm}
                         /> : 
                         null }
                         {currentPath.includes('/topartist') ? 

@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {NavLink} from 'react-router-dom'
 
 export default function Artists({ topArtists, topArtistMedTerm, topArtistShortTerm }) {
   const [isShown, setIsShown] = useState("allTime");
