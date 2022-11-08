@@ -1,9 +1,9 @@
 import {useState} from 'react';
 
-export default function Artists({ topArtists, topArtistMedTerm, topArtistShortTerm }) {
+export default function Artists({ topArtists, setTimeRange }) {
   const [isShown, setIsShown] = useState("allTime");
 
-  if(!topArtists || !topArtistMedTerm || !topArtistShortTerm) return;
+  if(!topArtists) return;
 
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
   const notActive = "text-slate-700 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";
@@ -37,14 +37,6 @@ export default function Artists({ topArtists, topArtistMedTerm, topArtistShortTe
   const artists = topArtists.map((artist) => {
     return renderArtists(artist);
   });
-  const artistsSixMos = topArtistMedTerm.map((artist) => {
-    return renderArtists(artist);
-  });
-
-  const artistsThreeMos = topArtistShortTerm.map((artist) => {
-    return renderArtists(artist);
-  });
-  
 
   return (
     <div class = "pt-1">
@@ -53,55 +45,30 @@ export default function Artists({ topArtists, topArtistMedTerm, topArtistShortTe
         <div className="lg:w-4/6 md:w-9/12 w-10/12 sm:pl-5 ml-auto mr-auto text-gray-500 lg:space-x-4 space-x-2 mb-6">
           <strong class = "lg:text-4xl md:text-3xl text-sm font-bold tracking-wide text-slate-50">Top Artist</strong>
           <button class={isShown === 'allTime' ? active : notActive}
-            onClick={(event) => showRecents(event, 'allTime')}>
+            onClick={(event) => {
+              showRecents(event, 'allTime');
+              setTimeRange('long_term');
+              }}>
             All Time
           </button>
           <button class={isShown === 'sixMos' ? active : notActive}
-            onClick={(event) => showRecents(event, 'sixMos')}>
+            onClick={(event) => {
+              showRecents(event, 'sixMos');
+              setTimeRange('medium_term');
+              }}>
             Six Months
           </button>
           <button class={isShown === 'threeMos' ? active : notActive}
-            onClick={(event) => showRecents(event, 'threeMos')}>
+            onClick={(event) => {
+              showRecents(event, 'threeMos');
+              setTimeRange('short_term');
+              }}>
             Three Months
           </button>
         </div>
-        {isShown === 'allTime' ?
           <div class={divClass}>
-          {artists}
+            {artists}
           </div>
-          :
-          <>
-          {isShown === 'sixMos' ?
-            <div class={divClass}>
-            {artistsSixMos}
-            </div>
-            :
-            <>
-            {isShown === 'threeMos' ?
-              <div class={divClass}>
-              {artistsThreeMos}
-              </div>
-              :
-              <div class = "flex h-screen justify-center items-center">
-                <div class="
-                  spinner-border
-                  animate-spin
-                  inline-block
-                  w-8
-                  h-8
-                  border-4
-                  rounded-full
-                  text-purple-500
-                  " role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            }
-            </>
-          }
-          </>
-          
-        }
         </div>
 
         :

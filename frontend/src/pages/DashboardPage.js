@@ -27,11 +27,10 @@ export default function Dashboard({ code }) {
     const [topTracks, setTopTracks] = useState();
     const [recents, setRecents] = useState();
 
-    const [topArtistShortTerm, setTopArtistShortTerm] = useState();
-    const [topArtistMedTerm, setTopArtistMedTerm] = useState();
-
-    const [topTracksShortTerm, setTopTracksShortTerm] = useState();
-    const [topTracksMedTerm, setTopTracksMedTerm] = useState();
+    const [timeRange, setTimeRange] = useState('long_term');
+    const updateTimeRange = (timeTerm) => {
+        setTimeRange(timeTerm);
+    }
 
     // ACCESS TOKEN
     useEffect(() => {
@@ -76,48 +75,25 @@ export default function Dashboard({ code }) {
     // TOP ARTISTS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopArtists({limit : 50 , time_range: "long_term"})
+        spotifyApi.getMyTopArtists({limit : 50 , time_range: timeRange})
         .then(function(data) {
             let topArtists = data.body.items;
             setTopArtists(topArtists);
 
-            spotifyApi.getMyTopArtists({limit : 50 , time_range: "medium_term"})
-            .then(function(data) {
-                let topArtists = data.body.items;
-                setTopArtistMedTerm(topArtists);
-
-                spotifyApi.getMyTopArtists({limit : 50 , time_range: "short_term"})
-                .then(function(data) {
-                    let topArtists = data.body.items;
-                    setTopArtistShortTerm(topArtists);
-                });
-            });
         });
-    }, [accessToken])
+    }, [accessToken, timeRange])
 
     // TOP TRACKS 
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopTracks({limit : 50 , time_range: "long_term"})
+        spotifyApi.getMyTopTracks({limit : 50 , time_range: timeRange})
         .then(function(data) {
             let topTracks = data.body.items;
             setTopTracks(topTracks)
-
-            spotifyApi.getMyTopTracks({limit : 50 , time_range: "medium_term"})
-            .then(function(data) {
-                let topTracks = data.body.items;
-                setTopTracksMedTerm(topTracks)
-
-                spotifyApi.getMyTopTracks({limit : 50 , time_range: "short_term"})
-                .then(function(data) {
-                    let topTracks = data.body.items;
-                    setTopTracksShortTerm(topTracks)
-                });
-            });
         }, function(err) {
             console.log('Something went wrong!', err);
         }
-    );}, [accessToken])
+    );}, [accessToken, timeRange])
     
     // SHOW RECENTLY PLAYED TRACKS
     useEffect(() => {
@@ -151,15 +127,13 @@ export default function Dashboard({ code }) {
                         {currentPath.includes('/toptracks') ? 
                             <Tracks path = '/toptracks'      
                             topTracks = {topTracks}
-                            topTracksMedTerm = {topTracksMedTerm}
-                            topTracksShortTerm = {topTracksShortTerm}
+                            setTimeRange = {updateTimeRange}
                         /> : 
                         null }
                         {currentPath.includes('/topartist') ? 
                             <Artists     
                             topArtists = {topArtists}
-                            topArtistMedTerm = {topArtistMedTerm}
-                            topArtistShortTerm = {topArtistShortTerm}
+                            setTimeRange = {updateTimeRange}
                             /> : 
                         null }
                         {currentPath.includes('/player') ? 
