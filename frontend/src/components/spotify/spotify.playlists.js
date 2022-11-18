@@ -23,14 +23,14 @@ export default function Playlist({playlist, recents}) {
   const playlists = playlist.items.map((card) => {
     return (
       <a href = {card.external_urls.spotify} target="_blank" rel="noopener noreferrer"
-          class="bg-[#292f3d] shadow-2xl hover:shadow-[#713299]/50 hover:bg-[#3e4450] rounded 
+          class="bg-[#292f3d] hover:bg-[#3e4450] rounded 
             p-2 mr-auto ml-auto w-fit duration-500 no-underline
-            hover:scale-105 transition duration-300 ease-in-out">
+            hover:scale-105 transition duration-200 ease-in-out text-slate-50 hover:text-sky-300">
           <div class="group relative">
               <img class="w-full lg:w-64 md:w-64 w-32 block rounded mr-auto ml-auto" src={card.images[0].url} alt="" draggable="false"/>
           </div>
           <div class="p-2">
-              <h3 class="text-white lg:text-xl md:text-lg text-xs lg:mb-1 overflow-hidden truncate lg:w-60 md:w-44 w-24">{card.name}</h3>
+              <h3 class="lg:text-xl md:text-lg text-xs lg:mb-1 overflow-hidden truncate lg:w-60 md:w-44 w-24">{card.name}</h3>
               <p class="text-gray-400 -mb-1 lg:text-lg md:text-md text-xs">{card.tracks.total} Tracks</p>
           </div>
       </a>

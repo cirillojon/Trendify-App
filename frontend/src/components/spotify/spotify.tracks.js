@@ -2,22 +2,23 @@ import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
 import spotifyLogo from "../../images/spotifyIcon.png"
 
-export default function Tracks({ topTracks, setTimeRange }) {
+export default function Tracks({ topTracks, topTracksSixMos, topTracksThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
-  if(!topTracks ) return;
-  
+  if(!topTracks || !topTracksSixMos || !topTracksThreeMos) return;
+
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
   const notActive = "text-slate-700 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";
   const divClass = "w-full";
   const highlightButton = (event, showTheRecents) => {
     setIsShown(showTheRecents);
   };
-
+  
   const renderTracks = (tracks) => {
     return (
       <a href = {`/track/${tracks.id}/${tracks.name.replace('/', '')}/${tracks.album.name.replace('/', '')}/${tracks.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
-          class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto
-            hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
+        class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 
+        hover:bg-[#3e4450] no-underline duration-200 lg:w-3/6 w-11/12 mr-auto ml-auto
+        hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
           <span class="rounded-full lg:ml-3 ml-2">
               <a href = {tracks.external_urls.spotify} 
                   target="_blank" rel="noopener noreferrer"
@@ -45,6 +46,12 @@ export default function Tracks({ topTracks, setTimeRange }) {
   const tracks = topTracks.map((tracks) => {
     return renderTracks(tracks);
   });
+  const tracksSixMos = topTracksSixMos.map((tracks) => {
+    return renderTracks(tracks);
+  });
+  const tracksThreeMos = topTracksThreeMos.map((tracks) => {
+    return renderTracks(tracks);
+  });
 
 
   return (
@@ -56,28 +63,58 @@ export default function Tracks({ topTracks, setTimeRange }) {
             <button class={isShown === 'allTime' ? active : notActive}
               onClick={(event) => {
                 highlightButton(event, 'allTime');
-                setTimeRange('long_term');
                 }}>
               All Time
             </button>
             <button class={isShown === 'sixMos' ? active : notActive}
               onClick={(event) => {
                 highlightButton(event, 'sixMos');
-                setTimeRange('medium_term');
                 }}>
               Six Months
             </button>
             <button class={isShown === 'threeMos' ? active : notActive}
               onClick={(event) => {
                 highlightButton(event, 'threeMos');
-                setTimeRange('short_term');
                 }}>
               Three Months
             </button>
           </div>
-          <div class={divClass}>
+          {isShown === 'allTime' ?
+            <div class={divClass}>
             {tracks}
-          </div>
+            </div>
+              :
+              <>
+              {isShown === 'sixMos' ?
+                <div class={divClass}>
+                {tracksSixMos}
+                </div>
+                :
+                <>
+                {isShown === 'threeMos' ?
+                  <div class={divClass}>
+                  {tracksThreeMos}
+                  </div>
+                  :
+                  <div class = "flex h-screen justify-center items-center">
+                    <div class="
+                      spinner-border
+                      animate-spin
+                      inline-block
+                      w-8
+                      h-8
+                      border-4
+                      rounded-full
+                      text-purple-500
+                      " role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                }
+                </>
+              }
+              </>
+            }
           <div class = "flex ml-auto mr-auto text-slate-400 justify-around items-center pt-10 w-fit">
               <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
               <img class="w-full lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>

@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import spotifyLogo from "../../images/spotifyIcon.png"
 
-export default function Artists({ topArtists, setTimeRange }) {
+export default function Artists({ topArtists, topArtistsSixMos, topArtistsThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
 
-  if(!topArtists) return;
+  if(!topArtists || !topArtistsSixMos || !topArtistsThreeMos) return;
 
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
   const notActive = "text-slate-700 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";
@@ -25,8 +25,7 @@ export default function Artists({ topArtists, setTimeRange }) {
                target="_blank" rel="noopener noreferrer"
                class=" ">
                   <img alt = "profile-profile" draggable="false" src={artist.images[2].url} 
-                  class="filter hover:grayscale hover:contrast-100 object-content 
-                  pr-auto lg:w-36 md:w-32 w-20 rounded-full aspect-square "/>
+                  class="object-content pr-auto lg:w-36 md:w-32 w-20 rounded-full aspect-square "/>
               </a>
           </div>
           <div class = "lg:w-36 md:w-32 w-20 mt-2 mr-auto ml-auto max-w-full">
@@ -36,6 +35,12 @@ export default function Artists({ topArtists, setTimeRange }) {
     )
   }
   const artists = topArtists.map((artist) => {
+    return renderArtists(artist);
+  });
+  const artistsSixMos = topArtistsSixMos.map((artist) => {
+    return renderArtists(artist);
+  });
+  const artistsThreeMos = topArtistsThreeMos.map((artist) => {
     return renderArtists(artist);
   });
 
@@ -48,28 +53,58 @@ export default function Artists({ topArtists, setTimeRange }) {
           <button class={isShown === 'allTime' ? active : notActive}
             onClick={(event) => {
               showRecents(event, 'allTime');
-              setTimeRange('long_term');
               }}>
             All Time
           </button>
           <button class={isShown === 'sixMos' ? active : notActive}
             onClick={(event) => {
               showRecents(event, 'sixMos');
-              setTimeRange('medium_term');
               }}>
             Six Months
           </button>
           <button class={isShown === 'threeMos' ? active : notActive}
             onClick={(event) => {
               showRecents(event, 'threeMos');
-              setTimeRange('short_term');
               }}>
             Three Months
           </button>
         </div>
-          <div class={divClass}>
+          {isShown === 'allTime' ?
+            <div class={divClass}>
             {artists}
-          </div>
+            </div>
+             :
+             <>
+             {isShown === 'sixMos' ?
+               <div class={divClass}>
+               {artistsSixMos}
+               </div>
+               :
+               <>
+               {isShown === 'threeMos' ?
+                 <div class={divClass}>
+                 {artistsThreeMos}
+                 </div>
+                 :
+                  <div class = "flex h-screen justify-center items-center">
+                      <div class="
+                        spinner-border
+                        animate-spin
+                        inline-block
+                        w-8
+                        h-8
+                        border-4
+                        rounded-full
+                        text-purple-500
+                        " role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                  </div>
+                }
+                </>
+              }
+              </>
+            }
           <div class = "w-fit flex ml-auto mr-auto text-slate-400 justify-around items-center pt-10">
               <div class = "text-center lg:text-lg text-md pr-2">Data obtained from Spotify</div>
               <img class="lg:w-8 w-6 block" src={spotifyLogo} alt="" draggable="false"/>

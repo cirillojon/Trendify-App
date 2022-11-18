@@ -23,16 +23,15 @@ export default function Dashboard({ code }) {
     const [user, setUser] = useState();
     const [numFollowing, setNumFollowing] = useState();
     const [playlist, setPlaylist] = useState();
-    const [topArtists, setTopArtists] = useState();
-    const [topTenArtists, setTopTenArtists] = useState();
-    const [topTracks, setTopTracks] = useState();
-    const [topTenTracks, setTopTenTracks] = useState();
     const [recents, setRecents] = useState();
 
-    const [timeRange, setTimeRange] = useState('long_term');
-    const updateTimeRange = (timeTerm) => {
-        setTimeRange(timeTerm);
-    }
+    const [topTracksAllTime, setTopTracksAllTime] = useState();
+    const [topTracksSixMos, setTopTracksSixMos] = useState();
+    const [topTracksThreeMos, setTopTracksThreeMos] = useState();
+
+    const [topArtistsAllTime, setTopArtistsAllTime] = useState();
+    const [topArtistsSixMos, setTopArtistsSixMos] = useState();
+    const [topArtistsThreeMos, setTopArtistsThreeMos] = useState();
 
     // ACCESS TOKEN
     useEffect(() => {
@@ -77,37 +76,51 @@ export default function Dashboard({ code }) {
     // TOP ARTISTS
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopArtists({limit : 50 , time_range: timeRange})
+        spotifyApi.getMyTopArtists({limit : 50 , time_range: 'long_term'})
         .then(function(data) {
             let topArtists = data.body.items;
-            setTopArtists(topArtists);
+            setTopArtistsAllTime(topArtists);
 
-        });
-        spotifyApi.getMyTopArtists({limit : 10 , time_range: "long_term"})
-        .then(function(data) {
-            let topArtists = data.body.items;
-            setTopTenArtists(topArtists);
+            spotifyApi.getMyTopArtists({limit : 50 , time_range: 'medium_term'})
+            .then(function(data) {
+                let topArtists = data.body.items;
+                setTopArtistsSixMos(topArtists);
 
+                spotifyApi.getMyTopArtists({limit : 50 , time_range: 'short_term'})
+                .then(function(data) {
+                    let topArtists = data.body.items;
+                    setTopArtistsThreeMos(topArtists);
+                });
+            });
         });
-    }, [accessToken, timeRange])
+    }, [accessToken])
 
     // TOP TRACKS 
     useEffect(() => {
         if(!accessToken) return
-        spotifyApi.getMyTopTracks({limit : 50 , time_range: timeRange})
+        spotifyApi.getMyTopTracks({limit : 50 , time_range: 'long_term'})
         .then(function(data) {
             let topTracks = data.body.items;
-            setTopTracks(topTracks)
+            setTopTracksAllTime(topTracks)
+
+            spotifyApi.getMyTopTracks({limit : 50 , time_range: 'medium_term'})
+            .then(function(data) {
+                let topTracks = data.body.items;
+                setTopTracksSixMos(topTracks)
+
+                spotifyApi.getMyTopTracks({limit : 50 , time_range: 'short_term'})
+                .then(function(data) {
+                    let topTracks = data.body.items;
+                    setTopTracksThreeMos(topTracks)
+                });
+            });
+
+
         }, function(err) {
             console.log('Something went wrong!', err);
         });
 
-        spotifyApi.getMyTopTracks({limit : 10 , time_range: 'long_term'})
-        .then(function(data) {
-            let topTracks = data.body.items;
-            setTopTenTracks(topTracks)
-        });
-    }, [accessToken, timeRange])
+    }, [accessToken])
     
     // SHOW RECENTLY PLAYED TRACKS
     useEffect(() => {
@@ -127,27 +140,29 @@ export default function Dashboard({ code }) {
         <div class = "bg-[#111827] min-h-screen font-poppins">
             <Nav />
             <>
-                {user && numFollowing && topTracks && topArtists && accessToken ?
+                {user && numFollowing && topTracksAllTime && topArtistsAllTime && accessToken ?
                     <div>
                         {currentPath.includes('/profile') ? 
                             <Profile     
                             profile = {user}
                             numFollowing = {numFollowing}
                             playlist = {playlist}
-                            topTracks = {topTenTracks}
-                            topArtists = {topTenArtists}
+                            topTracks = {topTracksAllTime}
+                            topArtists = {topArtistsAllTime}
                             /> : 
                         null }
                         {currentPath.includes('/toptracks') ? 
                             <Tracks path = '/toptracks'      
-                            topTracks = {topTracks}
-                            setTimeRange = {updateTimeRange}
+                            topTracks = {topTracksAllTime}
+                            topTracksSixMos = {topTracksSixMos}
+                            topTracksThreeMos = {topTracksThreeMos}
                         /> : 
                         null }
                         {currentPath.includes('/topartist') ? 
                             <Artists     
-                            topArtists = {topArtists}
-                            setTimeRange = {updateTimeRange}
+                            topArtists = {topArtistsAllTime}
+                            topArtistsSixMos = {topArtistsSixMos}
+                            topArtistsThreeMos = {topArtistsThreeMos}
                             /> : 
                         null }
                         {currentPath.includes('/player') ? 

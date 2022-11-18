@@ -11,7 +11,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
         )
     } 
 
-    const artists = topArtists.map((artist) => {
+    const artists = topArtists.slice(0,10).map((artist) => {
         return (
             <a href = {artist.external_urls.spotify} target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 h-20 hover:bg-[#3e4450] 
@@ -32,11 +32,11 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
         )
     })
 
-    const tracks = topTracks.map((track) => {
+    const tracks = topTracks.slice(0,10).map((track) => {
         return (
             <a href = {`/track/${track.id}/${track.name.replace('/', '')}/${track.album.name.replace('/', '')}/${track.artists[0].name.replace('/', '')}`} target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-3 rounded-2xl bg-[#292f3d] mb-3 hover:bg-[#3e4450] no-underline duration-200
-                    hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
+                hover:scale-105 transition duration-300 ease-in-out text-slate-50 hover:text-sky-300">
                 <span class="rounded-full ml-3">
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
@@ -65,7 +65,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     <div class = "ml-auto mr-auto lg:px-10 px-2 lg:pb-20 pb-24">
         <div class="ml-auto mr-auto min-h-fit lg:w-3/6 flex items-center justify-center">
             <div class="p-6 rounded-xl w-full">
-                <img draggable="false" src={topArtists[1].images[0].url}
+                <img draggable="false" src={topArtists[0].images[0].url}
                     class="rounded-xl h-60 w-full object-cover shadow" alt=""/>
                 <div class="flex justify-center relative">
                 <img draggable="false" alt = "profile" src={avatarImage} 
