@@ -1,8 +1,8 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+import './node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import LandingPage from './pages/LandingPage'
