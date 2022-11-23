@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
 import spotifyLogo from "../../images/spotifyIcon.png"
+import noImageSong from "../../images/unknownSong.png"
 
 export default function Tracks({ topTracks, topTracksSixMos, topTracksThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
@@ -23,7 +24,7 @@ export default function Tracks({ topTracks, topTracksSixMos, topTracksThreeMos }
               <a href = {tracks.external_urls.spotify} 
                   target="_blank" rel="noopener noreferrer"
                   class="filter hover:grayscale hover:contrast-100">
-              <img alt = "profile-profile" draggable="false" src={tracks.album.images[2].url} 
+              <img alt = "profile-profile" draggable="false" src={(tracks.album.images.length === 0) ? `${noImageSong}` : `${tracks.album.images[0].url}`}
                   class="object-content lg:w-16 lg:h-16 md:w-14 md:h-14 sw-12 h-12 ml-1"/>
               </a>
           </span>

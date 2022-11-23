@@ -2,6 +2,7 @@ import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
 import ErrorMessage from "./spotify.error"
 import spotifyLogo from "../../images/spotifyIcon.png"
+import noImageSong from "../../images/unknownSong.png"
 
 export default function Playlist({playlist, recents}) {
 
@@ -46,7 +47,7 @@ export default function Playlist({playlist, recents}) {
               <a href = {song.track.external_urls.spotify} 
                   target="_blank" rel="noopener noreferrer"
                   class="filter hover:grayscale hover:contrast-100">
-              <img alt = "profile-profile" draggable="false" src={song.track.album.images[2].url} 
+              <img alt = "profile-profile" draggable="false" src={(song.track.album.images.length === 0) ? `${noImageSong}` : `${song.track.album.images[0].url}`}
                   class="object-content lg:w-16 lg:h-16 md:w-14 md:h-14 sw-12 h-12 ml-1"/>
               </a>
           </span>

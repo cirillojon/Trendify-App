@@ -91,7 +91,7 @@ export default function Player({ accessToken, user }) {
                 chooseTrack={chooseTrack}
               />
             ))}
-            <div class = "flex h-full">
+            <div class = "flex h-full lg:mb-0 lg:mt-0 md:mb-10 md:mt-10 mt-6 mb-6">
               <TrackInfo song = {song}/>
             </div>
           </div>

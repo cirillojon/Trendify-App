@@ -2,6 +2,9 @@ import React from "react"
 import {NavLink} from 'react-router-dom'
 import ErrorMessage from "./spotify.error"
 import spotifyLogo from "../../images/spotifyIcon.png"
+import noImageArtist from "../../images/unknownArtist.png"
+import noImageSong from "../../images/unknownSong.png"
+import noImageProfile from "../../images/unknownProfile.png"
 
 export default function Profile({ profile, numFollowing, playlist, topTracks, topArtists }) {
     if (!profile || !numFollowing || !playlist|| !topTracks || !topArtists ) return;
@@ -21,7 +24,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {artist.external_urls.spotify} 
                             target="_blank" rel="noopener noreferrer"
                             class="filter hover:grayscale hover:contrast-100">
-                        <img alt = "profile-profile" draggable="false" src={artist.images[2].url} 
+                        <img alt = "profile-profile" draggable="false" src={(artist.images.length === 0) ? `${noImageArtist}` : `${artist.images[0].url}`} 
                         class="object-content pr-auto lg:w-14 lg:h-14 w-12 h-12 rounded-full aspect-square "/>
                     </a>
                 </span>
@@ -41,7 +44,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <a href = {track.external_urls.spotify} 
                         target="_blank" rel="noopener noreferrer"
                         class="filter hover:grayscale hover:contrast-100">
-                    <img alt = "profile-profile" draggable="false" src={track.album.images[2].url} 
+                    <img alt = "profile-profile" draggable="false" src={(track.album.images.length === 0) ? `${noImageSong}` : `${track.album.images[0].url}`}
                         class="object-content lg:w-14 lg:h-14 w-12 h-12 ml-1"/>
                     </a>
                 </span>
@@ -59,7 +62,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
     // Check if user have a profile picture, 
     // if they don't the picture of their top artist will be set as their picture
     const avatarImage = (profile.images.length === 0) ? 
-    `${topArtists[0].images[0].url}` : `${profile.images[0].url}`;
+    `${noImageProfile}` : `${profile.images[0].url}`;
 
   return (
     <div class = "ml-auto mr-auto lg:px-10 px-2 lg:pb-20 pb-24">
@@ -69,7 +72,7 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     class="rounded-xl h-60 w-full object-cover shadow" alt=""/>
                 <div class="flex justify-center relative">
                 <img draggable="false" alt = "profile" src={avatarImage} 
-                    class="w-32 h-32 object-cover rounded-full border-8 border-[#111827] shadow absolute -top-16" />
+                    class="w-32 h-32 object-cover rounded-full border-8 border-[#111827] absolute -top-16" />
                 </div>
                 <h1 class="text-slate-50 text-5xl mt-20 text-center font-bold mb-1 flex justify-center items-center space-x-2">
                     <a target="_blank" rel="noopener noreferrer" class="lg:text-5xl text-3xl font-bold no-underline hover:underline text-sky-50 hover:text-sky-300" href = {profile.external_urls.spotify} >{profile.display_name}</a>
@@ -120,8 +123,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top 10 Artists</strong>
                     <NavLink exact to='/topartist'>
                         <div class = "p-3 ml-auto">
-                            <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold sm:py-2 sm:px-3 py-2 px-3 border-2 
-                                border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs duration-300">SEE MORE</button>
+                            <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-semibold  sm:py-2 sm:px-3 py-2 px-3 border-2 
+                                border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs duration-300">See More</button>
                         </div>
                     </NavLink>
                 </div>
@@ -136,8 +139,8 @@ export default function Profile({ profile, numFollowing, playlist, topTracks, to
                     <strong class = "mr-auto font-bold text-2xl p-3 text-white tracking-wide">Your Top 10 Tracks</strong>
                     <NavLink exact to='/toptracks'>
                         <div class = "p-3 ml-auto">
-                            <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-bold sm:py-2 sm:px-3 py-2 px-3 border-2 
-                                border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs duration-300">SEE MORE</button>
+                            <button class="hover:bg-slate-400 hover:text-[#292f3d] text-slate-400 font-semibold sm:py-2 sm:px-3 py-2 px-3 border-2 
+                                border-slate-400 rounded-full shadow tracking-wide lg:text-sm text-xs duration-300">See More</button>
                         </div>
                     </NavLink>
                 </div>

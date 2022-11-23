@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import spotifyLogo from "../../images/spotifyIcon.png"
+import noImage from "../../images/unknownArtist.png"
 
 export default function Artists({ topArtists, topArtistsSixMos, topArtistsThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
@@ -24,7 +25,7 @@ export default function Artists({ topArtists, topArtistsSixMos, topArtistsThreeM
               <a href = {artist.external_urls.spotify} 
                target="_blank" rel="noopener noreferrer"
                class=" ">
-                  <img alt = "profile-profile" draggable="false" src={artist.images[2].url} 
+                  <img alt = "profile-profile" draggable="false" src={(artist.images.length === 0) ? `${noImage}` : `${artist.images[0].url}`} 
                   class="object-content pr-auto lg:w-36 md:w-32 w-20 rounded-full aspect-square "/>
               </a>
           </div>

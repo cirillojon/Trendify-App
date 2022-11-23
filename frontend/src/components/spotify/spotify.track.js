@@ -111,7 +111,7 @@ const Track = () => {
                         <div class = "flex flex-col gap-4" >
                             <a href={song.tracks.items[0].external_urls.spotify} target="_blank" rel="noreferrer" 
                                 class="bg-[#292f3d] shadow-lg rounded p-3 mr-auto ml-auto no-underline
-                                    hover:bg-[#3e4450]">
+                                    hover:bg-[#3e4450] hover:scale-105 transition duration-200 ease-in-out">
                                 <div class="group relative">
                                     <img class="w-full md:w-64 w-48 block" src={song.tracks.items[0].album.images[0].url} alt="" draggable="false"/>
                                 </div>
