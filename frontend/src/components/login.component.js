@@ -135,7 +135,7 @@ function Login() {
         <img select draggable="false" class="flex items-center mb-4 pb-4 " style={{ width: 250}} src={logo} alt="Trendify"></img>   
         <div class="w-full bg-[#1f2937] rounded-lg shadow border-2 md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-regular md:text-2xl text-white">
+            <h1 id="BurgersAndTwo"class="text-xl font-bold leading-tight tracking-regular md:text-2xl text-white">
                 Sign in to your account
             </h1>
             <div class="hidden mb-4 flex items-center bg-red-600 text-white text-sm font-regular px-4 py-3" role="alert" id = "error">

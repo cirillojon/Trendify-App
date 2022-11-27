@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node server.js",
         "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
-        "test": "jest --verbose"
+        "test": "jest"
     },
     "author": "",
     "license": "ISC",
@@ -29,6 +29,7 @@
         "express-rate-limit": "^6.6.0",
         "handlebars": "^4.7.7",
         "ioredis": "^5.2.3",
+        "jest-environment-jsdom": "^29.3.1",
         "jsonwebtoken": "^8.5.1",
         "jwt-decode": "^3.1.2",
         "lyrics-finder": "^21.7.0",
@@ -45,6 +46,7 @@
         "react-spotify-web-playback": "^0.10.0",
         "redis-server": "^1.2.2",
         "spotify-web-api-node": "^5.0.2",
+        "string.prototype.replaceall": "^1.0.7",
         "validator": "^13.7.0"
     },
     "devDependencies": {
@@ -60,6 +62,7 @@
         "vue-jest": "^3.0.7"
     },
     "jest": {
+        "testEnvironment": "jsdom",
         "transformIgnorePatterns": [
             "node_modules"
         ],

@@ -70,8 +70,6 @@
     "jest": "^29.3.1"
   },
   "jest": {
-        
-    
     "rootDir": "./",
     "roots": [
         "<rootDir>"

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import SpotifyWebApi from "spotify-web-api-node"
 // eslint-disable-next-line no-unused-vars
 //import { Chart as ChartJS } from 'chart.js/auto'
-import { Bar } from 'react-chartjs-2'
+//import { Bar } from 'react-chartjs-2'
 import ErrorMessage from "./player/ErrorMessage"
 import { formatDuration, parsePitchClass } from './player/spotify.trackUtils';
 import spotifyLogo from "../../images/spotifyIcon.png"
