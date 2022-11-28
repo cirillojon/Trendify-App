@@ -2,10 +2,16 @@ import {useState} from 'react';
 import { formatDuration } from './player/spotify.trackUtils';
 import spotifyLogo from "../../images/spotifyIcon.png"
 import noImageSong from "../../images/unknownSong.png"
+import ErrorMessage from "./spotify.error"
 
 export default function Tracks({ topTracks, topTracksSixMos, topTracksThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
   if(!topTracks || !topTracksSixMos || !topTracksThreeMos) return;
+  if(topTracks.length < 1) {
+    return (
+        <ErrorMessage />
+    )
+} 
 
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
   const notActive = "text-slate-700 lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-transparent hover:border-purple-500 hover:text-slate-50 focus:border-purple-500 focus:text-slate-50";

@@ -44,14 +44,6 @@ function Body() {
         as well as view the stats and insights of a particular song.
         Do you have a music you want to play? You can try playing it with our TrendiPlayer.
       </p>
-      <div class="lg:w-2/5 w-4/5 flex justify-center ml-auto mr-auto">
-          <button class="tracking-wider w-full h-16 px-6 lg:text-md text-sm
-          transition-colors duration-150 bg-[#a247db] focus:shadow-outline 
-          text-slate-50 font-bold py-2 px-2 rounded-full hover:bg-[#8239af] 
-          hover:text-slate-200 duration-300">
-            Download App
-          </button>
-      </div>
       <div class="lg:w-2/5 w-4/5 flex justify-center mt-3 ml-auto mr-auto">
         <a class = "w-full" href={connectSpotify()}>
           <button class="tracking-wider w-full h-16 px-6 lg:text-md text-sm

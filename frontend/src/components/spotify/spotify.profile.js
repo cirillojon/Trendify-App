@@ -8,7 +8,7 @@ import noImageProfile from "../../images/unknownProfile.png"
 
 export default function Profile({ profile, numFollowing, playlist, topTracks, topArtists }) {
     if (!profile || !numFollowing || !playlist|| !topTracks || !topArtists ) return;
-    if(topArtists.length < 10 || topTracks.length < 10) {
+    if(topArtists.length < 1 || topTracks.length < 1) {
         return (
             <ErrorMessage />
         )

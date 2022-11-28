@@ -1,10 +1,15 @@
 import {useState} from 'react';
 import spotifyLogo from "../../images/spotifyIcon.png"
 import noImage from "../../images/unknownArtist.png"
+import ErrorMessage from "./spotify.error"
 
 export default function Artists({ topArtists, topArtistsSixMos, topArtistsThreeMos }) {
   const [isShown, setIsShown] = useState("allTime");
-
+  if(topArtists.length < 1) {
+    return (
+        <ErrorMessage />
+    )
+} 
   if(!topArtists || !topArtistsSixMos || !topArtistsThreeMos) return;
 
   const active = "lg:text-2xl md:text-xl text-xs font-bold tracking-wide transition duration-300 border-b-4 border-purple-500 text-slate-50";
