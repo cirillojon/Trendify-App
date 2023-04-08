@@ -1,5 +1,5 @@
 # Trendify!
-Spotify Application made with MERN stack hosted @ https://trendify-project.herokuapp.com/login
+Spotify Application made with MERN stack hosted @ https://trendify-project.herokuapp.com
 
 With Trendify, you no longer have to wait for your 'Spotify Wrapped' to view your top tracks and artists!
 
